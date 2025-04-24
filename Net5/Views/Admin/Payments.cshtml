@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Payments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeadSection {
+    <style>
+    </style>
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            Payments
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                <li class="breadcrumb-item active" aria-current="page">List of Payments</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <br />
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive table-current-listing">
+                        <table id="current-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Payment Id</th>
+                                    <th>Datetime</th>
+                                    <th>User Id</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Currency</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterSection {
+    <script>
+
+        var currentListURL = '/Admin/CurrentPayments';
+        var current_table = bindGrid($('#current-listing'), currentListURL);
+
+        $('#current-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#edit_popup").attr('disabled', 'disabled');
+                $("#btn_delete").attr('disabled', 'disabled');
+            }
+            else {
+                current_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#edit_popup").removeAttr('disabled');
+                $("#btn_delete").removeAttr('disabled');
+            }
+        });
+
+        function bindGrid(table, url) {
+            return table.DataTable({
+                "ajax": {
+                    'type': 'POST',
+                    'url': url,
+                    'data': {},
+                },
+                'processing': true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>'
+                },
+                "drawCallback": function () {
+                    $('.dataTables_paginate > .pagination').addClass('rounded-flat');
+                },
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                }],
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "PaymentId" },
+                    {
+                        "data": "CreatedOn",
+                        "render": function (data, type, row, meta) {
+                            if (data == "")
+                                return "";
+                            else
+                                return getDataTableDate(data);
+                        }
+                    },
+                    { "data": "UserId" },
+                    { "data": "Description" },
+                    { "data": "Amount" },
+                    { "data": "Currency" },
+                    {
+                        "data": "Status",
+                        "render": function (data, type, row, meta) {
+                            return getDataTablePaymentStatus(row['Status']);
+                        }
+                    }
+                ]
+            });
+        }
+
+    </script>
+}

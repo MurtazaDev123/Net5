@@ -1,0 +1,111 @@
+﻿@model SmartEcommerce.Models.Product.Program
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/programs">Programs</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 editCol">
+            <h2>@Model.Title</h2>
+            <br>
+            <p>
+                @Model.Description
+            </p>
+        </div>
+        <div class="col-6 editCol">
+            <div><img src="/@Model.ImageURL"></div>
+        </div>
+
+    </div>
+</div>
+
+<section class="recentHub nonCarousel">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="bigTitle">
+                    <h1>EPISODES </h1>
+                </div>
+
+                <div class="recentHubInner leftRight">
+
+                    @foreach (var item in Model.Episodes)
+                    {
+                        <div class="productBox videoThumb">
+                            <div class="videoThumbBox">
+                                <a href="@item.URL" class="thumbImg"><img src="/@item.ImageURL" alt=""></a>
+                                <div class="videoThumbHover">
+                                    <a href="#">
+                                        <i class="playIcon">
+                                            <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                            </svg>
+                                        </i>
+                                    </a>
+                                    <div class="playDetail">
+                                        <ul>
+                                            <li>
+                                                <a href="@item.URL">
+                                                    <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                    </svg>
+                                                    <span>Play Video</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="btnAddToList" id="@item.Id" data-videoname="@item.Title" data-islist="@item.IsList">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        @if (item.IsList == 1)
+                                                        {
+                                                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" fill="white" />
+                                                            <span>Remove from List</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <path d="M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z" fill="white" />
+                                                            <span>Add to List</span>
+                                                        }
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="videoThumbInfo">
+                                <h2><a href="@item.URL">@item.Title</a></h2>
+                                <div class="videoThumbUserInfo">
+                                    <a href="@item.ProfileURL">@item.CreatedBy</a>
+                                </div>
+                                <div class="viewUp">
+                                    <span>@BusinessLogic.DataHelper.FormatNumber(item.Views) views</span>
+                                    <span style="float: right;">@BusinessLogic.DataHelper.TimeAgo(item.CreatedOn)</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />

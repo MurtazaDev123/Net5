@@ -1,0 +1,360 @@
+﻿@model SmartEcommerce.Models.Product.LiveStreaming
+@{
+    ViewBag.Title = "LiveStreamDetail";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f00a1031bbdc90012dbcdcb&product=inline-share-buttons" async="async"></script>
+
+<style>
+    #st-1 .st-btn[data-network='sharethis'] {
+        background-color: #ff6a00!important;
+    }
+</style>
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/live-tv">Live TV</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="videoContainer">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-10 col-md-10">
+                <div class="videoPlayerWrap">
+                    <div id="player"></div>
+
+                    <div class="videoPlayerInfo">
+                        @*<div class="views">
+                            @BusinessLogic.DataHelper.FormatNumber(Model.Views) watching now
+                        </div>
+                        <div class="upDate">
+                            &middot; started streaming on @Model.CreatedOn.ToString("MMM d, yyyy")
+                        </div>*@
+                        <div class="likeUn">
+                            <div class="like">
+                                <a href="#" class="divLikeUn" data-toggle="tooltip" data-placement="bottom" title="I like this" id="1" data-isadd="@(Model.IsLike==false)">
+                                    <svg width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="path1" d="M3.33398 26L4.66732 26L4.66732 8.66666L3.33399 8.66666C2.62674 8.66666 1.94846 8.94762 1.44837 9.44771C0.94827 9.94781 0.667318 10.6261 0.667318 11.3333L0.667317 23.3333C0.667317 24.0406 0.948269 24.7189 1.44837 25.2189C1.94846 25.719 2.62674 26 3.33398 26ZM24.6673 8.66667L15.334 8.66666L16.83 4.176C16.9635 3.77522 16.9998 3.34846 16.9361 2.93087C16.8723 2.51328 16.7103 2.11682 16.4633 1.77413C16.2163 1.43143 15.8914 1.15232 15.5154 0.959779C15.1394 0.767238 14.7231 0.666774 14.3007 0.666665L14.0007 0.666665L7.33399 7.91733L7.33398 26L22.0007 26L27.25 14.468L27.334 14.0773L27.334 11.3333C27.334 10.6261 27.053 9.94781 26.5529 9.44772C26.0528 8.94762 25.3746 8.66667 24.6673 8.66667Z" fill="@(Model.IsLike ? "#FF6D00" : "#363636")" />
+                                    </svg>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                                </a>
+
+                                <span class="span1">@BusinessLogic.DataHelper.FormatNumber(Model.Likes)</span>
+                            </div>
+                            <div class="unlike">
+                                <a href="#" class="divLikeUn" data-toggle="tooltip" data-placement="bottom" title="I dislike this" id="0" data-isadd="@(Model.IsDislike==false)">
+                                    <svg width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="path0" d="M24.667 0L23.3337 0L23.3337 17.3333H24.667C25.3742 17.3333 26.0525 17.0524 26.5526 16.5523C27.0527 16.0522 27.3337 15.3739 27.3337 14.6667L27.3337 2.66667C27.3337 1.95942 27.0527 1.28115 26.5526 0.781048C26.0525 0.280951 25.3742 0 24.667 0ZM3.33366 17.3333H12.667L11.171 21.824C11.0375 22.2248 11.0011 22.6515 11.0649 23.0691C11.1286 23.4867 11.2907 23.8832 11.5377 24.2259C11.7847 24.5686 12.1096 24.8477 12.4855 25.0402C12.8615 25.2328 13.2779 25.3332 13.7003 25.3333H14.0003L20.667 18.0827L20.667 0L6.00033 0L0.750992 11.532L0.666992 11.9227L0.666992 14.6667C0.666992 15.3739 0.947944 16.0522 1.44804 16.5523C1.94814 17.0524 2.62641 17.3333 3.33366 17.3333Z" fill="@(Model.IsDislike ? "#FF9E40" : "#363636") " />
+                                    </svg>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                                </a>
+
+                                <span class="span0">@BusinessLogic.DataHelper.FormatNumber(Model.Dislikes)</span>
+                            </div>
+                        </div>
+                        <div class="shareBtn">
+                            <div class="sharethis-inline-share-buttons st_sharethis_custom"></div>
+                        </div>
+                    </div>
+
+                    <div class="videoUserName">
+                        <div class="videoUserNameInner">
+
+                            <div class="userInfo">
+                                <div class="userImg">
+                                    <a href="/@Model.ProfileURL">
+                                        <img src="/@Model.ProfileImageURL">
+                                    </a>
+                                </div>
+                                <div class="userName">
+                                    <h4><a href="/@Model.ProfileURL">@Model.CreatedBy</a></h4>
+                                    @*<p>@BusinessLogic.DataHelper.FormatNumber(Model.TotalSubscribers) subscribers </p>*@
+                                </div>
+                            </div>
+
+                            <div class="subscribeAlert">
+                                @if (BusinessLogic.clsWebSession.Subscription || BusinessLogic.clsWebCookie.SubscriptionType == "Free")
+                                {
+                                    <div id="divSubscribe">
+                                        @if (Model.IsSubscribed == 1)
+                                        {
+                                            <a href='#' class='btn btn-secondary btnSubscribe'>SUBSCRIBED</a>
+                                        }
+                                        else
+                                        {
+                                            <a href='#' class='btn btn-blue btnSubscribe'>SUBSCRIBE</a>
+                                        }
+                                    </div>
+
+                                    if (Model.IsSubscribed == 1)
+                                    {
+                                        <div class="AlertSub">
+                                            <a href="#" class="@(Model.Notification ? "active " : "")btnSubscriberNotification"><i class="fa fa-bell-@(Model.Notification ? "o" : "slash")" aria-hidden="true"></i></a>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div id="divSubscribe">
+                                        <span class='btn btn-secondary disabled noHover'>SUBSCRIBE</span>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="videoInfoDetail">
+                        <h1>@Model.Title</h1>
+                        <div class="videoDescription">
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br /><hr style="border-top: 1px solid #222!important;" /> <br />
+
+<section class="recentHub nonCarousel">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="bigTitle">
+                    <h1>More Live TV & Streaming</h1>
+                </div>
+                <div class="recentHubInner leftRight">
+
+                    @foreach (var item in Model.RelatedLiveStreaming)
+                    {
+                        <div class="productBox videoThumb">
+                            <div class="videoThumbBox">
+                                <a href="@item.URL" class="thumbImg"><img src="/@item.ImageURL" alt="@item.Title"></a>
+                                <div class="videoThumbHover">
+                                    <a href="@item.URL">
+                                        <i class="playIcon">
+                                            <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                            </svg>
+                                        </i>
+                                    </a>
+                                    <div class="playDetail">
+                                        <ul>
+                                            <li>
+                                                <a href="@item.URL">
+                                                    <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                    </svg>
+                                                    <span>Play Video</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="videoThumbInfo">
+                                <h2 class="side_video">
+                                    <a href="@item.URL">
+                                        @item.Title<br />
+                                        <small>@item.Description</small>
+                                    </a>
+                                </h2>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <br />
+
+    <input type="hidden" id="user_id" value="@Model.SubscriberId" />
+    <input type="hidden" id="is_subscribed" value="@Model.IsSubscribed" />
+
+    <div class="modal" id="ModalSubscribed" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <p>Unsubscribe from @Model.CreatedBy ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-secondary" id="btnUnSubscribe">UNSUBSCRIBE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalSubscribed1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="contentSubUser">
+                    Unsubscribe from @Model.CreatedBy ?
+                </div>
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item">
+                        <a href="javascript:;" id="btnUnSubscribe">Unsuscribe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:;" data-dismiss="modal">Cancel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @section FooterSection {
+
+        <script src="https://cdn.jsdelivr.net/clappr/latest/clappr.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dash-shaka-playback/2.0.4/dash-shaka-playback.js"></script>
+        <script src="http://towerz.me/clappr-youtube-playback/j/clappr-youtube-playback.js"></script>
+
+        <script>
+
+            var VideoId = @Model.Id;
+
+            $.each($("#collapseExample .nav-item"), function (index, value) {
+
+                if ($(value).hasClass('active')) {
+                    $(value).removeClass('active');
+                }
+
+                if ($(value).text().trim() == "Live TV") {
+                    $(value).addClass('active');
+                }
+            });
+
+
+            $(".divLikeUn").on('click', function (e) {
+                e.preventDefault();
+
+                var like_dislike = this.id;
+
+                var thatObject = $(this);
+                var is_add = ($(thatObject).attr('data-isadd') == "True" ? true : false);
+
+                var fill = "";
+
+                var total_likes_count = 0;//$("#hidden_likes_count").val();
+                var total_dislikes_count = 0; //$("#hidden_dislikes_count").val();
+
+                $(thatObject).find('.spinner-border').show();
+                $(thatObject).find('svg').hide();
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Web/LikeVideo",
+                    data: {
+                        'video_id': VideoId,
+                        'type': like_dislike,
+                        'is_add': is_add,
+                        'is_live_streaming': true
+                    },
+                    success: function (result) {
+
+                        if (result.success == true) {
+
+                            //$(thatObject).children('svg').children('path').each(function () {
+                            //    fill = $(this).attr('fill');
+                            //});
+
+                            // #363636 - Grey
+                            // #FF9E40 - Light Orange
+                            // #FF6D00 - Dark Orange
+
+                            if (is_add == false) {
+                                $('.path1').css({ fill: "#363636" });
+                                $('.path0').css({ fill: "#363636" });
+                                $(thatObject).attr('data-isadd', "True");
+
+                                ToastSuccess('LIKE/DISLIKE', 'Video removed from the list');
+
+                            } else {
+                                if (like_dislike == 1) {
+                                    $('.path1').css({ fill: "#FF6D00" });
+                                    $('.path0').css({ fill: "#363636" });
+                                    ToastSuccess('LIKE', 'Video added to like');
+                                } else {
+                                    $('.path0').css({ fill: "#FF9E40" });
+                                    $('.path1').css({ fill: "#363636" });
+                                    ToastSuccess('DISLIKE', 'Video added to dislike');
+                                }
+                                $(thatObject).attr('data-isadd', "False");
+                            }
+
+
+                            $(".span1").text(result.data.Likes);
+                            $(".span0").text(result.data.Dislikes);
+                        }
+
+                    },
+                    failure: function (data) {
+                        alert(data);
+                    },
+                    complete: function () {
+                        $(thatObject).find('.spinner-border').hide();
+                        $(thatObject).find('svg').show();
+                    }
+                });
+
+                return false;
+            });
+
+
+
+            //var _0x1c7d=['#player','@Model.VideoURL','Player','img/player-bg.jpg','100%','width'];(function(_0xd35156,_0x1c7d7e){var _0x21316f=function(_0x42fb78){while(--_0x42fb78){_0xd35156['push'](_0xd35156['shift']());}};_0x21316f(++_0x1c7d7e);}(_0x1c7d,0x9b));var _0x2131=function(_0xd35156,_0x1c7d7e){_0xd35156=_0xd35156-0x0;var _0x21316f=_0x1c7d[_0xd35156];return _0x21316f;};if($(window)[_0x2131('0x0')]()>0x2e3){var player=new Clappr[(_0x2131('0x3'))]({'parentId':'#player','source':_0x2131('0x2'),'autoPlay':!![],'poster':_0x2131('0x4'),'plugins':[DashShakaPlayback],'width':_0x2131('0x5')});}else{var player=new Clappr[(_0x2131('0x3'))]({'parentId':_0x2131('0x1'),'source':_0x2131('0x2'),'autoPlay':!![],'poster':'img/player-bg.jpg','plugins':[DashShakaPlayback],'width':_0x2131('0x5')});}
+
+            if ($(window).width() > 739) {
+                //Add your javascript for large screens here
+                var player = new Clappr.Player({
+                    parentId: '#player',
+                    source: '@Model.VideoURL',
+                    autoPlay: true,
+                    poster: 'img/player-bg.jpg',
+                    plugins: [DashShakaPlayback],
+                    //plugins: {playback: [YoutubePlayback]},
+                    //plugins: [DashShakaPlayback,YoutubePlayback],
+                    //height: 400,
+                    width: '100%'      //1275
+                })
+                //[DashShakaPlayback]
+            }
+            else {
+                //Add your javascript for small screens here
+                var player = new Clappr.Player({
+                    parentId: '#player',
+                    source: '@Model.VideoURL',
+                    autoPlay: true,
+                    poster: 'img/player-bg.jpg',
+                    plugins: [DashShakaPlayback],
+                    //plugins: {playback: [YoutubePlayback]},
+                    //plugins: [DashShakaPlayback,YoutubePlayback],
+                    //height: 400,
+                    width: '100%'
+                })
+                //[DashShakaPlayback]
+            }
+
+        </script>
+
+    }

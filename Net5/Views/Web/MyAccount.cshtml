@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "MyAccount";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<style>
+
+    .left-side-bar {
+    margin-left: 15px;
+}
+
+    .left-side-bar .navbar {
+    border: 1px solid #c10000;
+    border-radius: 0;
+    line-height: 30px;
+}
+</style>
+
+<div class="product-slider">
+    <div class="breadcrumb-products">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li><a href="default.aspx">Home</a></li>
+                        <li class="active">Order History</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mar-top-40">
+    <div class="row mar-btm-30">
+        <div class="left-side-bar">
+            <div class="my-account-left-bar">
+                <div class="col-sm-3">
+                    <ul class="nav navbar">
+                        <li><a href="my-dashboard"><span class="fa fa-tachometer"></span> Dashboard</a></li>
+                        <li><a href="my-edit-profile"><span class="fa fa-user"></span> Edit Profile</a></li>
+                        <li class="active"><a href="my-order-history"><span class="fa fa-history"></span> Order History</a></li>
+                        <li><a href="my-wishlist"><span class="fa fa-star"></span> Wish List</a></li>
+                        <li style="display:none;"><a href="my-products"><span class="fa fa-location-arrow"></span> My Products</a></li>
+                        <li style="display:none;"><a href="my-address"><span class="fa fa-location-arrow"></span> My Address</a></li>
+                        <li><a href="my-change-password"><span class="fa fa-key"></span> Change Password</a></li>
+                        <li><a href="my-subscription"><span class="fa fa-file"></span> New Subscription</a></li>
+                        <li><a href="my-de-activate"><span class="fa fa-ban"></span> De-Activate</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-side-dashboard">
+            <div class="my-account-dashboard">
+                <div class="col-sm-9">
+                    <div class="panel panel-default dashboard-content">
+                        <div class="panel-heading">
+                            Order History <span class="fa fa-history pull-left"></span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12" id="divOrders" clientidmode="Static">
+                                    <!-- Display Data from Database -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

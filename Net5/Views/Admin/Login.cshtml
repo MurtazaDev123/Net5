@@ -1,0 +1,174 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Net5 - Login</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/scripts/vendors/iconfonts/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="~/scripts/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/scripts/vendors/css/vendor.bundle.addons.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/content/css/style.css">
+    <!-- endinject -->
+    <link href="~/content/web/img/favicon.png" rel="icon" type="image/x-icon">
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
+                <div class="row flex-grow">
+                    <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                        <div class="auth-form-transparent text-left p-3">
+                            <div class="brand-logo">
+                                <img src="~/content/images/logo/admin-login-logo.png" alt="logo">
+                            </div>
+                            <form class="pt-3" id="form_login" method="post" action="/admin/login">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail">Username</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend bg-transparent">
+                                            <span class="input-group-text bg-transparent border-right-0">
+                                                <i class="fa fa-user text-primary"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" class="form-control form-control-lg border-left-0" id="userid" name="userid" placeholder="Username">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword">Password</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend bg-transparent">
+                                            <span class="input-group-text bg-transparent border-right-0">
+                                                <i class="fa fa-lock text-primary"></i>
+                                            </span>
+                                        </div>
+                                        <input type="password" class="form-control form-control-lg border-left-0" id="password" name="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="my-2 d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <label class="form-check-label text-muted">
+                                            <input type="checkbox" class="form-check-input">
+                                            Keep me signed in
+                                        </label>
+                                    </div>
+                                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                                </div>
+                                <div class="alert alert-danger login-error" style="display: none;">
+
+                                </div>
+                                <div class="my-3">
+                                    <button type="submit" id="submit" name="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                                        LOGIN
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 login-half-bg d-flex flex-row">
+                        <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright &copy; 2018  All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="~/scripts/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/scripts/vendors/js/vendor.bundle.addons.js"></script>
+    <!-- endinject -->
+    <!-- inject:js -->
+    <script src="~/scripts/off-canvas.js"></script>
+    <script src="~/scripts/hoverable-collapse.js"></script>
+    <script src="~/scripts/misc.js"></script>
+    <script src="~/scripts/settings.js"></script>
+    <script src="~/scripts/todolist.js"></script>
+    <!-- endinject -->
+
+    <script>
+
+        $("#form_login").on("submit", function () {
+
+            var hasfocus = false;
+
+            if ($("#userid").val().trim() == "") {
+                $("#userid").focus();
+                hasfocus = true;
+            }
+            else if ($("#password").val().trim() == "") {
+
+                if (!hasfocus) {
+                    $("#password").focus();
+                    hasfocus = true;
+                }
+            }
+
+            if (hasfocus) {
+                $(".login-error").text("Please fill all mandatory fields").show();
+                return false;
+            } else {
+                $(".login-error").hide();
+            }
+
+
+            $("#userid").attr('disabled', 'disabled');
+            $("#password").attr('disabled', 'disabled');
+
+            $("#submit").html("Loading...");
+            $("#submit").attr('disabled', 'disabled');
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/LoginAccount",
+                data: {
+                    user_id: $("#userid").val(),
+                    password: $("#password").val()
+                }
+            }).done(function (data) {
+
+                console.log(data);
+
+                if (data["Success"] == 1) {
+
+                    if (data["Info"]["LoginType"] == 1) {
+                        window.location = "/admin/dashboard";
+                    }
+                    else if (data["Info"]["LoginType"] == 2) {
+                        window.location = "/partner/dashboard";
+                    }
+                }
+                else {
+                    $(".login-error").text("Invalid userid or password!").show();
+                }
+
+            }).fail(function (data) {
+                alert(data);
+            }).always(function () {
+                $("#userid").removeAttr('disabled');
+                $("#password").removeAttr('disabled');
+                $("#submit").removeAttr('disabled');
+
+                $("#submit").html("LOGIN");
+            });
+
+            return false;
+        });
+
+    </script>
+
+</body>
+
+</html>

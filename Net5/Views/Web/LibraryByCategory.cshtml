@@ -1,0 +1,271 @@
+﻿
+@{
+    ViewBag.Title = "LibraryByCategory";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/category">Category</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><label id="lblCategoryName"></label></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*<section class="recentHub nonCarousel">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="bigTitle">
+                    <h1>VIDEO LIBRARY BY CATEGORY</h1>
+                </div>
+                <div class="recentHubInner leftRight">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="productBox videoThumb">
+                            <div class="videoThumbBox">
+                                <a href="/Web/LibraryDetail/@item.Id" class="thumbImg"><img src="/@item.ImageURL" alt=""></a>
+                                <div class="videoThumbHover">
+                                    <a href="#">
+                                        <i class="playIcon">
+                                            <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                            </svg>
+                                        </i>
+                                    </a>
+                                    <div class="playDetail">
+                                        <ul>
+                                            <li>
+                                                <a href="/Web/LibraryDetail/@item.Id">
+                                                    <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                    </svg>
+                                                    <span>PLAY</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="btnAddToList" id="@item.Id" data-videoname="@item.Title" data-islist="@item.IsList">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        @if (item.IsList == 1)
+                                                        {
+                                                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" fill="white" />
+                                                                <span>Remove from List</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <path d="M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z" fill="white" />
+                                                                <span>Add to List</span>
+                                                        }
+                                                    </svg>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="videoThumbInfo">
+                                <h2><a href="/Web/LibraryDetail/@item.Id">@item.Title</a></h2>
+                                <div class="viewUp">
+                                    <span>@BusinessLogic.DataHelper.FormatNumber(item.Views) views</span>
+                                    <span style="float: right;">@BusinessLogic.DataHelper.TimeAgo(item.CreatedOn)</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>*@
+
+
+<div class="searchDetail" id="search_progress" style="width: 100%; text-align: center;">
+    <img src="~/content/images/loader-1.svg" /><br />
+    <h3>Please wait while loading....</h3>
+</div>
+
+<section class="recentHub nonCarousel" id="search_result">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="recentHubInner leftRight" id="search_result_products">
+                    <!-- Populate from DB -->
+                </div>
+                <div class="loadMoreBtn centerAlign">
+                    <a href="#" class="btn btn-red btnLoadMore">Load More <span>38</span></a>
+                </div>
+                <input type="hidden" id="page_no" value="1" />
+                <input type="hidden" id="category_name" value="@ViewBag.CategoryName" />
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+
+@section FooterSection {
+
+    <script>
+
+        $().ready(function () {
+
+            $("#search_progress").show();
+            $("#search_result").hide();
+            $("#search_breadcrum").hide();
+
+            LoadData(false);
+        });
+
+        $(".btnLoadMore").on('click', function (e) {
+            e.preventDefault();
+
+            $(".btnLoadMore").html('Loading...').attr('disabled', 'disabled');
+
+            LoadData(true);
+
+        });
+
+        function LoadData(loadMore) {
+
+            var category_name = $("#category_name").val();
+            if (category_name == null)
+                category_name = '';
+
+            //console.log(category_name);
+
+            var page = '1';
+
+            if (!loadMore) {
+                page = getParameterByName('page');
+                if (page == null)
+                    page = '1';
+            }
+            else {
+                page = $("#page_no").val();
+            }
+
+            // Get Search Result
+            $.ajax({
+                type: "POST",
+                url: "/Web/LibraryByCategoryLoadMore",
+                data: {
+                    'category_name': category_name,
+                    'page': page
+                }
+            }).done(function (data) {
+
+                if (data == "999") {
+                    window.location.href = "/error";
+                    return;
+                }
+
+                if (data.Id == 0) {
+                    window.location.href = "/404";
+                    return;
+                }
+
+                $("#lblCategoryName").html(data.Title);
+                document.title = "Net Five - " + data.Title;
+
+                page = parseFloat(page) + 1;
+                $("#page_no").val(page);
+
+                //console.log(data.Title);
+
+                var _html = '';
+                $.each(data.Videos, function (index, value) {
+
+                    _html +=    '  <div class="productBox videoThumb BoxGrid6 BoxGrid5 BoxGrid4 BoxGrid3"> ' +
+                                '      <div class="videoThumbBox"> ' +
+                                '          <a href="' + value["URL"] + '" class="thumbImg"><img src="/' + value["ImageURL"] + '" alt="' + value["Title"] + '"></a>' +
+                                '          <div class="videoThumbHover"> ' +
+                                '              <a href="#"> ' +
+                                '                  <i class="playIcon"> ' +
+                                '                      <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                                '                          <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" /> ' +
+                                '                      </svg>  ' +
+                                '                  </i> ' +
+                                '              </a> ' +
+                                '              <div class="playDetail"> ' +
+                                '                  <ul>    ' +
+                                '                      <li>    ' +
+                                '                          <a href="' + value["URL"] + '"> ' +
+                                '                              <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg"> ' +
+                                '                                  <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" /> ' +
+                                '                              </svg> ' +
+                                '                              <span>PLAY</span> ' +
+                                '                          </a> ' +
+                                '                      </li> ' +
+                                '                      <li>    ' +
+                                '                          <a href="#" class="btnAddToList" id="' + value["Id"] + '" data-videoname="' + value["Title"] + '" data-islist="' + value["IsList"] + '"> ';
+                                                              
+                                                        if (value["IsList"] == 1) {
+                                                            _html += ' <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"> ';
+                                                            _html += '      <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" fill="white" /> ';
+                                                            _html += ' </svg> ';
+                                                            _html += ' <span>REMOVE</span> ';
+                                                        } else {
+                                                            _html += ' <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"> ';
+                                                            _html += '      <path d="M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z" fill="white" /> ';
+                                                            _html += ' </svg> ';
+                                                            _html += ' <span>SAVE</span> ';
+                                                        }
+
+                                _html += '                        </a> ' +
+                                '                    </li> ' +
+                                '               </ul> ' +
+                                '           </div> ' +
+                                '       </div> ' +
+                                '       </div> ' +
+
+                                '   <div class="videoThumbInfo"> ' +
+                                '       <h2><a href="' + value["URL"] + '">' + value["Title"] + '</a></h2> ' +
+                                '       <div class="videoThumbUserInfo"> ' +
+                                '           <a href="' + value["ProfileURL"] + '">' + value["CreatedBy"] + '</a> ' +
+                                '       </div> ' +
+                                '       <div class="viewUp"> ' +
+                                '           <span>' + value["FormatNumber"] + ' views</span> ' +
+                                '           <span style="float: right;">' + value["TimeAgo"] + '</span> ' +
+                                '      </div> ' +
+                                '   </div> ' +
+                                ' </div> ';
+
+
+                });
+
+                if (!loadMore)
+                    $("#search_result_products").html(_html);
+                else
+                    $("#search_result_products").append(_html);
+
+
+                //<span>" + data.RemainingRecords + "</span>
+                if (data.RemainingRecords > 0) {
+                    $(".btnLoadMore").html("Load More");
+                } else {
+                    $(".loadMoreBtn").hide();
+                }
+
+            }).fail(function (data) {
+                alert(data);
+            }).always(function () {
+                $("#search_progress").hide();
+                $("#search_result").show();
+                $("#search_breadcrum").show();
+            });
+        }
+
+    </script>
+
+}
+

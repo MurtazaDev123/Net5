@@ -1,0 +1,133 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Login - Net5</title>
+    <link href="~/content/web/img/favicon.png" rel="icon" type="image/x-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/content/web/css/bootstrap.css">
+    <link rel="stylesheet" href="/content/web/css/main.css">
+
+
+</head>
+<body>
+
+    <section class="accountSection">
+        <div class="accountSectionInner">
+            <div class="logo">
+                <a href="/"><img src="/content/web/img/logo.png"></a>
+            </div>
+            <ul class="navAccount">
+                <li><a href="/signUp">Register</a></li>
+                <li class="active"><a href="javascript:void(0);">Login</a></li>
+            </ul>
+            <div class="accountformDetail">
+                <form id="form-login" action="#" method="post">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" name="txtusername" id="txtusername" placeholder="User ID / Email Address">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="txtpassword" id="txtpassword" placeholder="Enter Your Password">
+                    </div>
+                    <div class="signForgot">
+                        <div class="signCheck">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Keep Me Signed In</label>
+                            </div>
+                        </div>
+                        <div class="forgotLink">
+                            <a href="/forget-password">Forgot Password?</a>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" id="invalid_msg" style="display: none;">
+                        <strong>Invalid User id or password</strong>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-red" type="submit" value="Sign In">
+                    </div>
+                </form>
+            </div>
+            <div class="quickAccess" style="display:none;">
+                <p>Quick Access With</p>
+                <ul>
+                    <li>
+                        <a href="#" class="fb"><i class="fa fa-facebook"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" class="tw"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" class="go"><i class="googleIcon"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script src="/content/web/js/jquery-3.4.1.min.js"></script>
+    <script src="/content/web/js/bootstrap.bundle.min.js"></script>
+    <script src="/content/web/js/bootstrap-select.min.js"></script>
+    <script src="/content/web/js/slick.js"></script>
+    <script src="/content/web/js/main.js"></script>
+
+    <script>
+
+        $("#form-login").on('submit', function (e) {
+            
+            e.preventDefault();
+
+            if ($("#txtusername").val().trim() == "" || $("#txtpassword").val().trim() == "") {
+                $("#txtusername").focus();
+                $("#invalid_msg").show().html("<strong>Authentication failed. You entered an incorrect username or password.</strong>");
+                return;
+            }
+
+            //if ($("#txtpassword").val().trim() == "") {
+            //    $("#txtpassword").focus();
+            //    $("#invalid_msg").show().html("<strong>Kindly enter Password</strong>");
+            //    return;
+            //}
+
+            $("#invalid_msg").hide();
+
+            $.ajax({
+                type: "POST",
+                url: '/Web/LoginRequest',
+                data: {
+                    'user_name': $("#txtusername").val(),
+                    'password': $("#txtpassword").val()
+                },
+                success: function (data) {
+                    if (data.Success == 1) {
+                        window.location = '/';
+                    } else {
+                        $("#invalid_msg").show().html("<strong>Stop ! Invalid User ID and Password.</strong>");
+                    }
+                },
+                failure: function (data) {
+                    console.log("Save failed result :", data);
+                    $("#invalid_msg").show().html(data);
+                },
+                complete: function () {
+
+                }
+            });
+
+        });
+
+    </script>
+</body>
+</html>

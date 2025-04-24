@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "ClaimVideos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeadSection {
+    <style>
+    </style>
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            Claimed Videos
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Library</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Claimed Videos</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button id="detail_popup" class="btn btn-primary btn-sm" style="width: 100px;" disabled><i class="fa fa-file"></i> Details</button>
+                    <button id="btn_approve" class="btn btn-info btn-sm" style="width: 100px;" disabled><i class="fa fa-check"></i> Approve</button>
+                    <button id="btn_reject" class="btn btn-danger btn-sm" style="width: 100px;" disabled><i class="fa fa-times"></i> Reject</button>
+                    <a href="/admin/dashboard" class="btn btn-secondary btn-sm" style="width: 100px;"><i class="fa fa-arrow-circle-left"></i> Back</a>
+
+                    <div class="float-right">
+                        <a class="btn btn-success btn-sm" id="btn_current" style="width: 100px;" href="#">Pending</a>
+                        <a class="btn btn-outline-dark btn-sm" id="btn_approved" style="width: 100px;" href="#">Approved</a>
+                        <a class="btn btn-outline-danger btn-sm" id="btn_rejected" style="width: 100px;" href="#">Reject</a>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="table-responsive table-current-listing">
+                        <table id="current-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Video Title</th>
+                                    <th>Video URL</th>
+                                    <th>Customer Name</th>
+                                    <th>Created On</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive table-approve-listing" style="display: none;">
+                        <table id="approve-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Video Title</th>
+                                    <th>Video URL</th>
+                                    <th>Customer Name</th>
+                                    <th>Created On</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive table-reject-listing" style="display: none;">
+                        <table id="reject-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Video Title</th>
+                                    <th>Video URL</th>
+                                    <th>Customer Name</th>
+                                    <th>Created On</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalDescription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="my_modal_width">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4>Description</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-sample" method="post" id="entry-form-program" action="#">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <p id="pDescription">Loading...</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" id="btnModalDescriptionClose" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterSection {
+    <script>
+
+        //var currentListURL = '/Admin/CurrentClaimVideos/1';
+        var current_table = bindGrid($('#current-listing'), '/Admin/CurrentClaimVideos/0');
+        var approve_table = bindGrid($('#approve-listing'), '/Admin/CurrentClaimVideos/1');
+        var reject_table = bindGrid($('#reject-listing'), '/Admin/CurrentClaimVideos/2');
+        var check = 0;
+
+        $('#current-listing tbody').on('click', 'tr', function () {
+
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#detail_popup").attr('disabled', 'disabled');
+                $("#btn_approve").attr('disabled', 'disabled');
+                $("#btn_reject").attr('disabled', 'disabled');
+            }
+            else {
+                current_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#detail_popup").removeAttr('disabled');
+                $("#btn_approve").removeAttr('disabled');
+                $("#btn_reject").removeAttr('disabled');
+
+                //var customer_email = $(this).closest("tr").find('td:eq(4)').text();
+                
+            }
+
+        });
+
+        $('#approve-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#detail_popup").attr('disabled', 'disabled');
+                $("#btn_approve").attr('disabled', 'disabled');
+                $("#btn_reject").attr('disabled', 'disabled');
+            }
+            else {
+                approve_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#detail_popup").removeAttr('disabled');
+                $("#btn_approve").removeAttr('disabled');
+                $("#btn_reject").removeAttr('disabled');
+            }
+        });
+
+        $('#reject-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#detail_popup").attr('disabled', 'disabled');
+                $("#btn_approve").attr('disabled', 'disabled');
+                $("#btn_reject").attr('disabled', 'disabled');
+            }
+            else {
+                reject_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#detail_popup").removeAttr('disabled');
+                $("#btn_approve").removeAttr('disabled');
+                $("#btn_reject").removeAttr('disabled');
+            }
+        });
+
+        $("#detail_popup").on("click", function (e) {
+
+            e.preventDefault();
+            var id = 0;
+
+            if (check == 0) {
+                id = current_table.$('tr.selected')[0].id;
+            } else if (check == 1) {
+                id = approve_table.$('tr.selected')[0].id;
+            } else if (check == 2) {
+                id = reject_table.$('tr.selected')[0].id;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/ClaimDescription',
+                data: {
+                    'Id': id,
+                },
+                success: function (data) {
+
+                    //console.log(data['Description']);
+
+                    $("#pDescription").html(data['Description']);
+                    $("#ModalDescription").modal('show');
+
+                },
+                failure: function (data) {
+                    console.log("Save failed result :", data);
+                },
+                complete: function () {
+
+                }
+            });
+
+        });
+
+        $("#btn_current").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-approve-listing").hide();
+            $(".table-reject-listing").hide();
+            $(".table-current-listing").fadeIn();
+            check = 0;
+
+            $("#btn_current").removeClass('btn-outline-success').addClass('btn-success');
+            $("#btn_approved").removeClass('btn-dark').addClass('btn-outline-dark');
+            $("#btn_rejected").removeClass('btn-danger').addClass('btn-outline-danger');
+
+            //$("#detail_popup").attr('disabled', 'disabled');
+            $("#btn_approve").show();
+            $("#btn_reject").show();
+        });
+
+        $("#btn_approved").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-current-listing").hide();
+            $(".table-reject-listing").hide();
+            $(".table-approve-listing").fadeIn();
+            check = 1;
+
+            $("#btn_approved").removeClass('btn-outline-dark').addClass('btn-dark');
+            $("#btn_current").removeClass('btn-success').addClass('btn-outline-success');
+            $("#btn_rejected").removeClass('btn-danger').addClass('btn-outline-danger');
+
+            //$("#detail_popup").attr('disabled', 'disabled');
+            $("#btn_approve").hide();
+            $("#btn_reject").hide();
+            
+        });
+
+        $("#btn_rejected").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-current-listing").hide();
+            $(".table-approve-listing").hide();
+            $(".table-reject-listing").fadeIn();
+            check = 2;
+
+            $("#btn_rejected").removeClass('btn-outline-danger').addClass('btn-danger');
+            $("#btn_current").removeClass('btn-success').addClass('btn-outline-success');
+            $("#btn_approved").removeClass('btn-dark').addClass('btn-outline-dark');
+
+            //$("#detail_popup").attr('disabled', 'disabled');
+            $("#btn_approve").hide();
+            $("#btn_reject").hide();
+
+        });
+
+        $("#btn_reject").on("click", function (e) {
+            e.preventDefault();
+            var id = current_table.$('tr.selected')[0].id;
+            claimVideoStatus(id, 2, "/Admin/ClaimVideosStatusUpdate", "/admin/claimvideos");
+        });
+
+        $("#btn_approve").on("click", function (e) {
+            e.preventDefault();
+            var id = current_table.$('tr.selected')[0].id;
+            claimVideoStatus(id, 1, "/Admin/ClaimVideosStatusUpdate", "/admin/claimvideos");
+        });
+
+        function bindGrid(table, url) {
+            return table.DataTable({
+                "ajax": {
+                    'type': 'POST',
+                    'url': url,
+                    'data': {},
+                },
+                'processing': true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>'
+                },
+                "drawCallback": function () {
+                    $('.dataTables_paginate > .pagination').addClass('rounded-flat');
+                },
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                    "visible": false,
+                }],
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "VideoTitle" },
+                    { "data": "VideoURL" },
+                    { "data": "CustomerName" },
+                    {
+                        "data": "CreatedOn",
+                        "render": function (data, type, row, meta) {
+                            return getDataTableDate(data);
+                        }
+                    }
+                ]
+            });
+        }
+
+    </script>
+}
+

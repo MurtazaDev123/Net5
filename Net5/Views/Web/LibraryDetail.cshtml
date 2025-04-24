@@ -1,0 +1,814 @@
+﻿@model SmartEcommerce.Models.Product.Videos
+@{
+    ViewBag.Title = "LibraryDetail";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+
+@section HeadSection
+{
+    <link href="~/content/css/jquery.toast.css" rel="stylesheet" />
+    <link href="~/content/web/css/plyr.css" rel="stylesheet" />
+    <style>
+        .bs-tooltip-bottom {
+            top: 15px !important;
+        }
+
+        #st-1 .st-btn[data-network='sharethis'] {
+            background-color: #ff6a00 !important;
+        }
+    </style>
+}
+
+@*<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5ef7b85d3b8b1ef7"></script>*@
+<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f00a1031bbdc90012dbcdcb&product=inline-share-buttons" async="async"></script>
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/library">Library</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="videoContainer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="videoPlayerWrap">
+                    <video controls crossorigin playsinline poster="/@Model.ImageURL" id="player">
+                        <!-- Video files -->
+                        <source src="/content/uploads/videos/@Model.VideoURL" type="video/mp4" size="576">
+                        @*<source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">*@
+                        <!-- <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080"> -->
+                        <!-- <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440"> -->
+                        <!-- Caption files -->
+                        @*<track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+                                   default>
+                            <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">*@
+
+                        <!-- Fallback for browsers that don't support the <video> element -->
+                        @*<a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>*@
+                    </video>
+                    <div class="videoPlayerInfo">
+                        <div class="views">
+                            @BusinessLogic.DataHelper.FormatNumber(Model.Views) views
+                        </div>
+                        <div class="upDate">
+                            @*Uploaded on @Model.CreatedOn.ToString("MMM d, yyyy")*@
+                            @BusinessLogic.DataHelper.TimeAgo(Model.CreatedOn)
+                        </div>
+
+                        @*#363636 - Grey
+                        #FF9E40 - Light Orange
+                        #FF6D00 - Dark Orange*@
+
+                        <div class="likeUn">
+                            <div class="like">
+                                <a href="#" class="divLikeUn" data-toggle="tooltip" data-placement="bottom" title="I like this" id="1" data-isadd="@(Model.IsLike==false)">
+                                    <svg width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="path1" d="M3.33398 26L4.66732 26L4.66732 8.66666L3.33399 8.66666C2.62674 8.66666 1.94846 8.94762 1.44837 9.44771C0.94827 9.94781 0.667318 10.6261 0.667318 11.3333L0.667317 23.3333C0.667317 24.0406 0.948269 24.7189 1.44837 25.2189C1.94846 25.719 2.62674 26 3.33398 26ZM24.6673 8.66667L15.334 8.66666L16.83 4.176C16.9635 3.77522 16.9998 3.34846 16.9361 2.93087C16.8723 2.51328 16.7103 2.11682 16.4633 1.77413C16.2163 1.43143 15.8914 1.15232 15.5154 0.959779C15.1394 0.767238 14.7231 0.666774 14.3007 0.666665L14.0007 0.666665L7.33399 7.91733L7.33398 26L22.0007 26L27.25 14.468L27.334 14.0773L27.334 11.3333C27.334 10.6261 27.053 9.94781 26.5529 9.44772C26.0528 8.94762 25.3746 8.66667 24.6673 8.66667Z" fill="@(Model.IsLike ? "#FF6D00" : "#363636")" />
+                                    </svg>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                                </a>
+                                
+                                <span class="span1">@BusinessLogic.DataHelper.FormatNumber(Model.Likes)</span>
+                            </div>
+                            <div class="unlike">
+                                <a href="#" class="divLikeUn" data-toggle="tooltip" data-placement="bottom" title="I dislike this" id="0" data-isadd="@(Model.IsDislike==false)">
+                                    <svg width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="path0" d="M24.667 0L23.3337 0L23.3337 17.3333H24.667C25.3742 17.3333 26.0525 17.0524 26.5526 16.5523C27.0527 16.0522 27.3337 15.3739 27.3337 14.6667L27.3337 2.66667C27.3337 1.95942 27.0527 1.28115 26.5526 0.781048C26.0525 0.280951 25.3742 0 24.667 0ZM3.33366 17.3333H12.667L11.171 21.824C11.0375 22.2248 11.0011 22.6515 11.0649 23.0691C11.1286 23.4867 11.2907 23.8832 11.5377 24.2259C11.7847 24.5686 12.1096 24.8477 12.4855 25.0402C12.8615 25.2328 13.2779 25.3332 13.7003 25.3333H14.0003L20.667 18.0827L20.667 0L6.00033 0L0.750992 11.532L0.666992 11.9227L0.666992 14.6667C0.666992 15.3739 0.947944 16.0522 1.44804 16.5523C1.94814 17.0524 2.62641 17.3333 3.33366 17.3333Z" fill="@(Model.IsDislike ? "#FF9E40" : "#363636") " />
+                                    </svg>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                                </a>
+                                
+                                <span class="span0">@BusinessLogic.DataHelper.FormatNumber(Model.Dislikes)</span>
+                            </div>
+                        </div>
+                        <div class="addList">
+                            <a href="#" class="btnAddToList" id="@Model.Id" data-videoname="@Model.Title" data-islist="@Model.IsList">
+
+                                @if (Model.IsList == 1)
+                                {
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" fill="#909090" />
+                                    </svg>
+                                    <span>REMOVE</span>
+                                }
+                                else
+                                {
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z" fill="#909090" />
+                                    </svg>
+                                    <span>SAVE</span>
+                                }
+
+                            </a>
+                        </div>
+                        <div class="shareBtn">
+                            @*<a href="#" class="btn btn-blue-outline">
+                                    <svg enable-background="new 0 0 96 96" height="96px" id="share" version="1.1" viewBox="0 0 96 96" width="96px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M72,56c-4.813,0-9.12,2.137-12.054,5.501L39.643,51.35C39.873,50.269,40,49.149,40,48s-0.127-2.269-0.357-3.349  l20.303-10.152C62.879,37.864,67.187,40,72,40c8.836,0,16-7.164,16-16S80.836,8,72,8s-16,7.164-16,16  c0,1.149,0.127,2.269,0.357,3.349L36.054,37.501C33.121,34.136,28.814,32,24,32c-8.836,0-16,7.164-16,16c0,8.836,7.164,16,16,16  c4.814,0,9.12-2.137,12.054-5.501l20.304,10.152C56.127,69.731,56,70.851,56,72c0,8.836,7.164,16,16,16s16-7.164,16-16  S80.836,56,72,56z M72,16c4.418,0,8,3.582,8,8s-3.582,8-8,8s-8-3.582-8-8S67.582,16,72,16z M24,56c-4.418,0-8-3.582-8-8  c0-4.418,3.582-8,8-8s8,3.582,8,8C32,52.418,28.418,56,24,56z M72,80c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S76.418,80,72,80  z" /></svg> <span>Share</span>
+                                </a>*@
+
+                            @*<div class="addthis_inline_share_toolbox"></div>*@
+                            <div class="sharethis-inline-share-buttons st_sharethis_custom"></div>
+
+                        </div>
+                        <div class="dropdown complainDropDown">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="javascript:void()" id="btnClaimVideo">Claim Video</a>
+                                <a class="dropdown-item" href="javascript:void()" id="btnReportVideo">Report Video</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="videoUserName">
+                        <div class="videoUserNameInner">
+
+                            <div class="userInfo">
+                                <div class="userImg">
+                                    <a href="@Model.ProfileURL">
+                                        <img src="@Model.ProfileImageURL">
+                                    </a>
+                                </div>
+                                <div class="userName">
+                                    <h4><a href="@Model.ProfileURL">@Model.CreatedBy</a></h4>
+                                    @*<p>@BusinessLogic.DataHelper.FormatNumber(Model.TotalSubscribers) subscribers </p>*@
+                                </div>
+                            </div>
+
+                            <div class="subscribeAlert">
+                                @if (BusinessLogic.clsWebSession.Subscription || BusinessLogic.clsWebCookie.SubscriptionType == "Free")
+                                {
+                                    <div id="divSubscribe">
+                                        @if (Model.IsSubscribed == 1)
+                                        {
+                                            <a href='#' class='btn btn-secondary btnSubscribe'>SUBSCRIBED</a>
+                                        }
+                                        else
+                                        {
+                                            <a href='#' class='btn btn-blue btnSubscribe'>SUBSCRIBE</a>
+                                        }
+                                    </div>
+
+                                    if (Model.IsSubscribed == 1)
+                                    {
+                                        <div class="AlertSub">
+                                            <a href="#" class="@(Model.Notification ? "active " : "")btnSubscriberNotification"><i class="fa fa-bell-@(Model.Notification ? "o" : "slash")" aria-hidden="true"></i></a>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div id="divSubscribe">
+                                        <span class='btn btn-secondary disabled noHover'>SUBSCRIBE</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="videoInfoDetail">
+                        <h1>@Model.Title</h1>
+                        <div class="videoDescription">
+                            <p>@Model.Description</p>
+                        </div>
+                        @*<div class="buyShare">
+                                <a href="#" class="btn btn-blue">Buy Now</a>
+                                <a href="#" class="btn btn-blue-outline">Share Product</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="relatedVideo">
+                    <div class="bigTitle justify-content-between">
+                        <h1>Related @(Model.Program.Id > 0 ? "Episodes" : "Videos") </h1>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                            <label class="custom-control-label" for="customSwitch1">Autoplay</label>
+                        </div>
+                    </div>
+                    <div class="relatedVideoArea list">
+
+                        @foreach (var item in Model.RelatedVideos)
+                        {
+                            <div class="productBox videoThumb">
+                                <div class="videoThumbBox">
+                                    <a href="@item.URL" class="thumbImg"><img src="/@item.ImageURL" alt="@item.Title"></a>
+                                    <div class="videoThumbHover">
+                                        <a href="@item.URL">
+                                            <i class="playIcon">
+                                                <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                </svg>
+                                            </i>
+                                        </a>
+                                        <div class="playDetail">
+                                            <ul>
+                                                <li>
+                                                    <a href="@item.URL">
+                                                        <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                        </svg>
+                                                        <span>PLAY</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="btnAddToList" id="@item.Id" data-videoname="@item.Title" data-islist="@item.IsList">
+                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            @if (item.IsList == 1)
+                                                            {
+                                                                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" fill="white" />
+                                                                <span>REMOVE</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <path d="M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z" fill="white" />
+                                                                <span>SAVE</span>
+                                                            }
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="videoThumbInfo">
+                                    <h2 class="side_video"><a href="@item.URL">@item.Title</a></h2>
+                                    <div class="videoThumbUserInfo">
+                                        <a href="@item.ProfileURL">@item.CreatedBy</a>
+                                    </div>
+                                    <div class="viewUp">
+                                        <span>@BusinessLogic.DataHelper.FormatNumber(item.Views) views</span>
+                                        <span style="float: right;">@BusinessLogic.DataHelper.TimeAgo(item.CreatedOn)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                    @if (Model.RelatedVideos.Count > 5)
+                    {
+                        <div class="relatedVideoMore">
+                            <a href="/Web/RelatedVideosAll/@Model.Id" class="btn btn-blue-outline">VIEW ALL RELATED VIDEOS</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.ProgramCategoryVideos.Count > 0)
+{
+    <section class="recentHub nonCarousel">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="bigTitle">
+                        <h1>MORE LIKE THIS</h1>
+                    </div>
+                    <div class="recentHubInner leftRight">
+                        @foreach (var item in Model.ProgramCategoryVideos)
+                        {
+                            <div class="productBox videoThumb">
+                                <div class="videoThumbBox">
+                                    <a href="@item.URL" class="thumbImg"><img src="/@item.ImageURL" alt="@item.Title"></a>
+                                    <div class="videoThumbHover">
+                                        <a href="#">
+                                            <i class="playIcon">
+                                                <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                </svg>
+                                            </i>
+                                        </a>
+                                        <div class="playDetail">
+                                            <ul>
+                                                <li>
+                                                    <a href="@item.URL">
+                                                        <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M9.79015 7.27724L1.01515 13.6616C0.967045 13.6962 0.91034 13.7168 0.851267 13.7213C0.792194 13.7257 0.733039 13.7138 0.680305 13.6868C0.627571 13.6598 0.583299 13.6188 0.552352 13.5683C0.521404 13.5178 0.50498 13.4597 0.504885 13.4005V0.639744C0.50469 0.580385 0.520936 0.522132 0.551822 0.471442C0.582707 0.420752 0.627027 0.379603 0.679867 0.352559C0.732707 0.325515 0.792004 0.313631 0.851185 0.318225C0.910365 0.322818 0.967119 0.343709 1.01515 0.378583L9.79015 6.75894C9.83161 6.78826 9.86543 6.82709 9.88877 6.87219C9.91211 6.91728 9.92429 6.96732 9.92429 7.01809C9.92429 7.06887 9.91211 7.1189 9.88877 7.16399C9.86543 7.20909 9.83161 7.24793 9.79015 7.27724Z" fill="white" />
+                                                        </svg>
+                                                        <span>PLAY</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="btnAddToList" id="@item.Id" data-videoname="@item.Title" data-islist="@item.IsList">
+                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            @if (item.IsList == 1)
+                                                            {
+                                                                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" fill="white" />
+                                                                <span>REMOVE</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <path d="M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z" fill="white" />
+                                                                <span>SAVE</span>
+                                                            }
+                                                        </svg>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="videoThumbInfo">
+                                    <h2><a href="@item.URL">@item.Title</a></h2>
+                                    <div class="videoThumbUserInfo">
+                                        <a href="@item.ProfileURL">@item.CreatedBy</a>
+                                    </div>
+                                    <div class="viewUp">
+                                        <span>@BusinessLogic.DataHelper.FormatNumber(item.Views) views</span>
+                                        <span style="float: right;">@BusinessLogic.DataHelper.TimeAgo(item.CreatedOn)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<br>
+
+<input type="hidden" id="user_id" value="@Model.SubscriberId" />
+<input type="hidden" id="is_subscribed" value="@Model.IsSubscribed" />
+
+<input type="hidden" id="hidden_likes_count" value="@BusinessLogic.DataHelper.FormatNumber(Model.Likes)" />
+<input type="hidden" id="hidden_dislikes_count" value="@BusinessLogic.DataHelper.FormatNumber(Model.Dislikes)" />
+
+
+<div class="modal fade complainReportModal" id="ModalClaimVideo" tabindex="-1" role="dialog" aria-labelledby="complainVideoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CLAIM MY VIDEO</h5>
+            </div>
+            <div class="modal-body">
+                <div class="ComplainReportBox">
+                    <div class="boxIn">
+                        <h3>Video Url</h3>
+                        <p id="pVideoURLClaim"></p>
+                    </div>
+                    <div class="boxIn">
+                        <h3>ADDITIONAL NOTES</h3>
+                        <textarea rows="5" class="form-control" placeholder="Enter Additional Notes" id="txtDescriptionClaim"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-blue" id="btnClaimVideoSave">SUBMIT MY REQUEST</button>
+                    <div class="error_msg" style="display: none; color:red; font-weight:bold;">Kindly enter all data</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade complainReportModal" id="ModalReportVideo" tabindex="-1" role="dialog" aria-labelledby="reportVideoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered BoxSign" role="document" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Signup</h5>
+            </div>
+            <div class="modal-body">
+                <div class="BoxSignIn">
+                    <p>You are not signed in.</p>
+                    <input type="submit" class="btn btn-blue" value="SIGN IN">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">REPORT VIDEO</h5>
+            </div>
+            <div class="modal-body">
+                <div class="ComplainReportBox">
+                    <div class="boxIn">
+                        <h3>Video Url</h3>
+                        <p id="pVideoURLReport"></p>
+                    </div>
+                    <div class="boxIn">
+                        <h3>Select Reason</h3>
+                        <select id="ddlTopic" name="ddlTopic" class="selectpicker" data-width="100%">
+                            <option value="0">Select an Issue</option>
+                            @{
+                                List<SmartEcommerce.Models.Common.Topic> items = new BusinessLogic.Common().GetTopicByStatus(1);
+                                foreach (var i in items)
+                                {
+                                    <option value="@i.Id">@i.Title</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="boxIn">
+                        <h3>ADDITIONAL NOTES</h3>
+                        <textarea rows="5" class="form-control" placeholder="Enter Additional Notes" id="txtDescriptionReport"></textarea>
+                    </div>
+                    <div class="boxIn">
+                        <p>Flagged videos and users are reviewed by NetFive staff with in 24 hours once reported to determine whether they violate community guidelines.</p>
+                    </div>
+                    <button type="button" class="btn btn-blue" id="btnReportVideoSave">SUBMIT MY REQUEST</button>
+                    <div class="error_msg" style="display: none; color:red; font-weight:bold;">Kindly enter all data</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ModalSubscribed" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <p>Unsubscribe from @Model.CreatedBy ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">CANCEL</button>
+                <button type="button" class="btn btn-secondary" id="btnUnSubscribe">UNSUBSCRIBE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalSubscribed1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="contentSubUser">
+                Unsubscribe from @Model.CreatedBy ?
+            </div>
+            <ul class="nav nav-pills nav-fill">
+                <li class="nav-item">
+                    <a href="javascript:;" id="btnUnSubscribe">Unsuscribe</a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" data-dismiss="modal">Cancel</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section FooterSection {
+
+    <script src="~/content/web/js/plyr.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
+            const player = new Plyr('#player');
+
+            // Expose
+            window.player = player;
+            //player.autoplay = true;
+
+
+            //var player = document.getElementById("player");
+            player.addEventListener("play", function () {
+                console.log("it's go time");
+            });
+
+        });
+
+    </script>
+    <script src="~/scripts/jquery.toast.js"></script>
+
+    <script type="text/javascript">
+
+        //$('#ModalSubscribed').modal('show');
+
+        var VideoId = @Model.Id;
+        var LoginId = @BusinessLogic.clsWebSession.LoginId;
+        var VideoURL = window.location.href;
+        var clickNumbers1 = 0;
+        var clickNumbers0 = 0;
+        var DisputeType = 0;
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(".divLikeUn").on('click', function (e) {
+
+            e.preventDefault();
+
+            var like_dislike = this.id;
+
+            var thatObject = $(this);
+            var is_add = ($(thatObject).attr('data-isadd') == "True" ? true : false);
+
+            var fill = "";
+
+            var total_likes_count = 0;//$("#hidden_likes_count").val();
+            var total_dislikes_count = 0; //$("#hidden_dislikes_count").val();
+
+            $(thatObject).find('.spinner-border').show();
+            $(thatObject).find('svg').hide();
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Web/LikeVideo",
+                data: {
+                    'video_id': VideoId,
+                    'type': like_dislike,
+                    'is_add': is_add
+                },
+                success: function (result) {
+
+                    if (result.success == true) {
+
+                        //$(thatObject).children('svg').children('path').each(function () {
+                        //    fill = $(this).attr('fill');
+                        //});
+                        
+                        // #363636 - Grey
+                        // #FF9E40 - Light Orange
+                        // #FF6D00 - Dark Orange
+
+                        if (is_add == false) {
+                            $('.path1').css({ fill: "#363636" });
+                            $('.path0').css({ fill: "#363636" });
+                            $(thatObject).attr('data-isadd', "True");
+
+                            ToastSuccess('LIKE/DISLIKE','Video removed from the list');
+
+                        } else {
+                            if (like_dislike == 1) {
+                                $('.path1').css({ fill: "#FF6D00" });
+                                $('.path0').css({ fill: "#363636" });
+                                ToastSuccess('LIKE','Video added to like');
+                            } else {
+                                $('.path0').css({ fill: "#FF9E40" });
+                                $('.path1').css({ fill: "#363636" });
+                                ToastSuccess('DISLIKE','Video added to dislike');
+                            }
+                            $(thatObject).attr('data-isadd', "False");
+                        }
+
+
+                        $(".span1").text(result.data.Likes);
+                        $(".span0").text(result.data.Dislikes);
+                    }
+
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                complete: function () {
+                    $(thatObject).find('.spinner-border').hide();
+                    $(thatObject).find('svg').show();
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+            //console.log(total_likes_count);
+
+            //console.log(like_dislike);
+
+            //$('.path0').find("path, polygon, circle").attr("fill", "#fff");
+            //$('.path0').find("fill").val();
+            //console.log($('.path1').find("fill").val());
+
+            //$(this).find(".st0").css({ fill: '#'+patternAColor });
+
+            //if (like_dislike == 1) {
+
+            //    clickNumbers0 = 0;
+            //    clickNumbers1++;
+
+                
+
+
+
+            //    //if(clickNumbers1 % 2 == 0){
+
+            //    //    total_likes_count = Number($("#hidden_likes_count").val()) - 0;
+            //    //    $(".span1").text(total_likes_count);
+
+            //    //    $('.path1').css({ fill: "#363636" });
+
+            //    //    //total_dislikes_count = Number(total_dislikes_count) + 1;
+            //    //    //$(".span0").text(total_dislikes_count);
+
+            //    //} else {
+
+            //    //    total_likes_count = Number($("#hidden_likes_count").val()) + 1;
+            //    //    $(".span1").text(total_likes_count);
+
+            //    //    $('.path1').css({ fill: "#FF6D00" });
+
+            //    //    //total_dislikes_count = Number(total_dislikes_count) - 1;
+            //    //    //$(".span0").text(total_dislikes_count);
+
+            //    //}
+
+                
+            //}
+
+            //if (like_dislike == 0) {
+
+            //    clickNumbers1 = 0;
+            //    clickNumbers0++;
+
+            //    //if(clickNumbers0 % 2 == 0){
+            //    //    $('.path0').css({ fill: "#363636" });
+            //    //} else {
+            //    //    $('.path0').css({ fill: "#299AFF" });
+            //    //}
+
+            //    if(clickNumbers0 % 2 == 0){
+
+            //        total_dislikes_count = Number($("#hidden_dislikes_count").val()) - 0;
+            //        $(".span0").text(total_dislikes_count);
+
+            //        $('.path0').css({ fill: "#363636" });
+
+            //        //total_likes_count = Number(total_likes_count) + 1;
+            //        //$(".span1").text(total_likes_count);
+
+            //    } else {
+
+            //        total_dislikes_count = Number($("#hidden_dislikes_count").val()) + 1;
+            //        $(".span0").text(total_dislikes_count);
+
+            //        $('.path0').css({ fill: "#FF6D00" });
+
+            //        // total_likes_count = Number(total_likes_count) - 1;
+            //        // $(".span1").text(total_likes_count);
+
+            //    }
+
+
+            //    $('.path1').css({ fill: "#363636" });
+
+            //}
+
+            //$('#ModalProgram').modal({ backdrop: 'static', keyboard: false });
+            //$('#ModalProgram').modal('show');
+            //alert(LoginId);
+
+            //console.log("Likes " + total_likes_count);
+            //console.log("DisLikes " + total_dislikes_count);
+
+            return false;
+        });
+
+        $("#btnClaimVideo").on('click', function (e) {
+
+            if (LoginId > 0) {
+                DisputeType = 1;
+                $('#pVideoURLClaim').html(VideoURL);
+                $('#ModalClaimVideo').modal('show');
+            }else{
+                $('#ModalLogin').modal('show');
+            }
+
+        });
+
+        $("#btnClaimVideoSave").on('click', function (e) {
+
+            if (LoginId > 0) {
+                SaveClaimReportVideo(this.id);
+            }else{
+                $('#ModalLogin').modal('show');
+            }
+
+        });
+
+        $("#btnReportVideo").on('click', function (e) {
+
+            if (LoginId > 0) {
+                DisputeType = 2;
+                $('#pVideoURLReport').html(VideoURL);
+                $('#ModalReportVideo').modal('show');
+            }else{
+                $('#ModalLogin').modal('show');
+            }
+
+        });
+
+        $("#btnReportVideoSave").on('click', function (e) {
+
+            if (LoginId > 0) {
+                SaveClaimReportVideo(this.id);
+            }else{
+                $('#ModalLogin').modal('show');
+            }
+
+        });
+
+        function SaveClaimReportVideo(button_id){
+
+            $(".error_msg").hide();
+
+            var Description = ''; var TopicId = 0; var TopicName = '';
+
+            if (DisputeType == 1) {
+
+                Description = $("#txtDescriptionClaim").val();
+
+                if (Description == '') {
+                    $(".error_msg").show();
+                    return false;
+                }
+
+            }else{
+
+                Description = $("#txtDescriptionReport").val();
+                TopicId = $("#ddlTopic").val();
+                TopicName = $("#ddlTopic option:selected").text();
+
+                if (TopicId == 0 || Description == '') {
+                    $(".error_msg").show();
+                    return false;
+                }
+
+            }
+
+
+            $("#"+button_id).attr("disabled", true);
+            $("#"+button_id).text("PROCESS..");
+
+            //alert(TopicId);
+            //return false;
+
+            $.ajax({
+                type: "POST",
+                url: '/Web/VideoAddDispute',
+                data: {
+                    'LoginId': LoginId,
+                    'VideoId': VideoId,
+                    'VideoURL': VideoURL,
+                    'Description': Description,
+                    'TopicId': TopicId,
+                    'TopicName': TopicName,
+                    'Type': DisputeType
+                },
+                success: function (data) {
+
+                    console.log(data);
+
+                    $("#"+button_id).text("SUBMIT MY REQUEST");
+
+                    $('#ModalClaimVideo').modal('hide');
+                    $('#ModalReportVideo').modal('hide');
+
+                    $('#txtDescriptionClaim').val('');
+                    $('#txtDescriptionReport').val('');
+
+                    //$('#ddlTopic').selectpicker('refresh');
+                    //$("#ddlTopic").val('0');
+
+                    $("#ddlTopic").val('0').trigger('change');
+
+                    DisputeType = 0;
+
+                    if (data.ErrorCode == "000") {
+                        ToastSuccess('REQUEST','Request Submit Successfully..!');
+                    }
+                    else {
+                        $("#"+button_id).attr("disabled", false);
+                        ToastError('REQUEST','Request Already Submitted..!');
+                    }
+                },
+                failure: function (data) {
+                    console.log("Save failed result :", data);
+                },
+                complete: function () {
+
+                }
+            });
+
+            return false;
+
+        }
+
+    </script>
+
+}
+
+

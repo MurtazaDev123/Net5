@@ -1,0 +1,195 @@
+﻿@model SmartEcommerce.Models.Common.Subscription
+@{
+    ViewBag.Title = "SubscriptionPlan";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Subscription Plan - Netfive</title>
+
+    <link href="~/content/web/img/favicon.png" rel="icon" type="image/x-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/content/web/css/bootstrap.css">
+    <link rel="stylesheet" href="/content/web/css/main.css">
+    <link rel="stylesheet" href="http://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link rel="stylesheet" href="~/content/web/css/jquery.toast.css">
+
+    <style>
+        .stripe-button-el {
+            display: none !important;
+        }
+    </style>
+
+</head>
+<body>
+
+    <section class="accountSection longForm">
+        <div class="accountSectionInner">
+            <div class="logo">
+                <a href="/"><img src="/content/web/img/logo.png"></a>
+            </div>
+            <div class="accountformDetail">
+                <form>
+                    <h1 class="text-center"> SUBSCRIPTION PLAN</h1> <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <h3>CHOOS YOUR PLAN</h3>
+                                <select class="form-control" id="ddlPlan" name="ddlPlan">
+                                    <option value="Monthly">Plan 01 - Monthly Billing</option>
+                                    <option value="Yearly">Plan 02 - Yearly Billing</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <h3>CURRENCY</h3>
+                                <input type="text" class="form-control" name="txtPrice" id="txtCurrency" value="@Model.Country.Currency" disabled="">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <h3>PRICE</h3>
+                                <input type="text" class="form-control" name="txtPrice" id="txtPrice" value="@Model.MonthlyRate" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <h3>WHAT WILL YOU GET ? </h3>
+                        <ul class="list-group">
+                            <li class="list-group-item"><span class="fa fa-check"></span> Access to all videos.</li>
+                            <li class="list-group-item"><span class="fa fa-check"></span> Access to all live channels.</li>
+                            <li class="list-group-item"><span class="fa fa-check"></span> Exclusive content and much more.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-red" id="btnContinue">CONTINUE</button>
+                    </div>
+
+                    @*<div class="textAgree">
+                        Active an subscription, you agree to the <a href="#">Netfive.tv</a> <br><a href="/terms-and-conditions">Membership Agreement</a> and <a href="/privacy-and-policy">Privacy Policy</a>.
+                    </div>*@
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <form action="/payment-success" method="post" id="myForm">
+        <script id="stripeScript"
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_JBD0CAyHLOIVNZe5KVcSzx0O00jroeBBJf"
+                data-image=""
+                data-name="NetFive"
+                data-description="Payment Proceed"
+                data-amount="100"
+                data-currency="CAD">
+        </script>
+        <input type="hidden" id="cancelSubscriptionTb" name="cancelSubscription" value="False" />
+        <input type="hidden" id="changeCardTb" name="ChangeCard" value="False" />
+    </form>
+
+    <script src="/content/web/js/jquery-3.4.1.min.js"></script>
+    <script src="/content/web/js/bootstrap.bundle.min.js"></script>
+    <script src="/content/web/js/bootstrap-select.min.js"></script>
+    <script src="/content/web/js/slick.js"></script>
+    <script src="/content/web/js/main.js"></script>
+    <script src="~/scripts/web/js/jquery.toast.js"></script>
+    <script src="~/scripts/custom/functions.js"></script>
+
+    <script>
+
+        $(document).on("click", "#btnContinue", function (e) {
+
+            var plan = $("#ddlPlan").val();
+            var price = $("#txtPrice").val();
+            
+            $("#btnContinue").attr("disabled", true);
+            $("#btnContinue").text("PROCESS..");
+
+            //alert($("#txtPrice").val());
+            //return false;
+
+            window.location.href = "/checkout";
+            //$(".stripe-button-el").trigger('click');
+            return false;
+
+            $.ajax({
+                type: "POST",
+                url: '/Web/SubscriptionPlanActive',
+                data: {
+                    'SubscriptionPlan': plan,
+                    'SubscriptionPrice': price
+                },
+                success: function (data) {
+
+                    console.log(data);
+                    $("#btnContinue").text("CONTINUE");
+
+                    if (data.ErrorCode == "000") {
+                        ToastSuccess('SUBSCRIPTION', 'Your Subscription has been activated..!');
+                        setTimeout(function () { window.location.href = '/' }, 3000);
+                    } else {
+                        $("#btnContinue").removeAttr("disabled");
+                        ToastError('SUBSCRIPTION', 'Error Occured..!');
+                    }
+                },
+                failure: function (data) {
+                    console.log("Save failed result :", data);
+                },
+                complete: function () {
+
+                }
+            });
+
+            return false;
+        });
+
+        $("#ddlPlan").on('change', function () {
+            
+            //alert($(this).val());
+            var SubscriptionPlan = $(this).val();
+
+            $.ajax({
+                type: "POST",
+                url: '/Web/SubscriptionPlanChange',
+                data: { SubscriptionPlan: SubscriptionPlan },
+                success: function (data) {
+
+                    //console.log(data.MonthlyRate);
+
+                    $("#txtCurrency").val(data.Country.Currency);
+
+                    if (SubscriptionPlan == "Monthly") {
+                        $("#txtPrice").val(data.MonthlyRate);
+                        //$("#txtPrice").val(data.Country.Currency + " " + data.MonthlyRate);
+                    } else {
+                        $("#txtPrice").val(data.YearlyRate);
+                        //$("#txtPrice").val(data.Country.Currency + " " + data.YearlyRate);
+                    }
+                    
+                },
+                failure: function (data) {
+                    console.log("failed result :", data);
+                },
+                complete: function () {
+
+                }
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
+

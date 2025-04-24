@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "PaymentFailed";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Payment</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="accountSection longForm">
+    <div class="accountSectionInner">
+        <div class="col-sm-12">
+            <div class="accountformDetail">
+                <form>
+                    <h1 class="text-center"> Payment was unsuccessfully. Your credit card was not charged.</h1> <br>
+                    
+                    <div class="form-group">
+                        <ul class="list-group">
+                            <li class="list-group-item"><span class="fa fa-check"></span> Error Code : @BusinessLogic.SBSession.GetSessionValue("SessionErrorCode") .</li>
+                            <li class="list-group-item"><span class="fa fa-check"></span> Error Message : @BusinessLogic.SBSession.GetSessionValue("SessionErrorMessage") .</li>
+                            <li class="list-group-item"><span class="fa fa-check"></span> Decline Code : @BusinessLogic.SBSession.GetSessionValue("SessionDeclineCode") .</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-red" id="btnActive" onclick="window.location.href = '/subscription-plan'">RETRY AGAIN</button>
+                    </div>
+
+
+                    @*Need help? We're here if you need it. Visit the Help Center or Contact Us now*@
+
+                    <div class="textAgree">
+                        Need help? We're here if you need it. Visit the <a href="/faqs" target="_blank">Help Center</a> or <a href="/privacy-and-policy" target="_blank">Contact Us</a> now.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

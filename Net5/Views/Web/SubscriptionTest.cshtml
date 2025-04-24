@@ -1,0 +1,27 @@
+﻿@model Stripe.Checkout.Session
+@{
+    ViewBag.Title = "SubscriptionTest";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<h2>SubscriptionTest</h2>
+
+<script src="https://js.stripe.com/v3/"></script>
+<div>
+    <button class="btn btn-blue" id="btnPay">Pay Now</button>
+</div>
+
+<script>
+        var stripe = Stripe("pk_test_JBD0CAyHLOIVNZe5KVcSzx0O00jroeBBJf");
+        var element = document.getElementById("btnPay");
+
+        element.addEventListener('click', function(){
+            stripe.redirectToCheckout({
+                sessionId:'@Model.Id'
+            }).then(function (result) {
+
+            });
+        });
+
+</script>
+

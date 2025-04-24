@@ -1,0 +1,372 @@
+﻿@model SmartEcommerce.Models.Common.User
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<style>
+    .has-error {
+        border-color: red !important;
+    }
+</style>
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-sm-2">
+            </div>
+
+            <div class="col-sm-8">
+
+                <form id="form1" method="post">
+
+                    <div class="contactForm">
+                        <h1> EDIT PROFILE</h1>
+
+                        <div class="form-group">
+                            <label>NAME</label>
+                            <input type="text" class="form-control" id="txtName" name="txtName" value="@Model.UserName" placeholder="Enter your full name here">
+                            <div class="input-error form-control-input" style="color: Red; display: none;">Name is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>EMAIL</label>
+                            <input type="text" class="form-control" id="txtEmail" name="txtEmail" value="@Model.UserId" disabled="">
+                        </div>
+
+                        <div class="form-group">
+                            <label>PHONE</label>
+                            <input type="tel" class="form-control" id="txtPhone" name="txtPhone" value="@Model.PhoneNo" disabled="">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>BIRTHDAY</label>
+                                    <input type="date" class="form-control" id="txtDOB" name="txtDOB" value="@Model.DateOfBirth">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>GENDER</label>
+                                    <select class="form-control" id="ddlGender" name="ddlGender">
+                                        <option value="0">Select Gender</option>
+                                        <option value="Male" @(Model.Gender == "Male" ? "selected='selected'" : "") >Male</option>
+                                        <option value="Female" @(Model.Gender == "Female" ? "selected='selected'" : "")>Female</option>
+                                        <option value="Other" @(Model.Gender == "Other" ? "selected='selected'" : "")>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>COUNTRY</label>
+                            <select class="form-control" disabled="">
+                                <option value="@Model.CountryName">@Model.CountryName</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>STATE</label>
+                                    <select class="form-control" id="ddlState" name="ddlState"></select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>CITY</label>
+                                    <select class="form-control" id="ddlCity" name="ddlCity"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>ADDRESS</label>
+                            <textarea rows="4" class="form-control" name="txtAddress" id="txtAddress" placeholder="Enter your address here">@Model.Address</textarea>
+                            <div class="input-error form-control-input" style="color: Red; display: none;">Address is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>PHOTO</label>
+                            <div>
+                                <input type="file" name="uploadFile" id="profile-img"> <br> <br>
+                                <img src="/content/uploads/users/@Model.ProfilePicture" id="profile-img-tag" style="margin-bottom: 10px;" width="200px">
+                            </div>
+                        </div>
+
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-red" id="btnSubmit">UPDATE PROFILE</button>
+                            <div class="error_msg" style="display: none; color:red; font-weight:bold;">Kindly enter all data</div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="col-sm-2">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<br />
+
+@section FooterSection {
+    <script>
+
+        var CountryId = '@Model.CountryId';
+        var StateId = '@Model.StateId';
+        var CityId = '@Model.CityId';
+        
+        LoadState();
+        LoadCity(StateId,0);
+
+        $('#btnSubmit').click(function () {
+
+            if (Validation()) {
+
+                $("#btnSubmit").attr("disabled", true);
+                $("#btnSubmit").text("PROCESS..");
+
+                var Form_data = new FormData($('#form1')[0]);
+
+                $.ajax({
+                    url: "/Web/UpdateProfile",
+                    type: "POST",
+                    data: Form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function () {
+                        //$("#preview").fadeOut();
+                        //$("#err").fadeOut();
+                    },
+                    success: function (data) {
+                        console.log(data);
+
+                        $("#btnSubmit").text("UPDATE PROFILE");
+
+                        if (data['ErrorCode'] == '000') {
+                            ToastSuccess('PROFILE UPDATE', 'Profile Updated Successfully..!');
+                            setTimeout(function () { window.location.reload(); }, 3000);
+                        }
+                        else {
+                            $("#btnSubmit").removeAttr("disabled");
+                            ToastError('PROFILE UPDATE', 'Error Occured..!');
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        alert(e);
+                    }
+                });
+
+            }
+
+        });
+
+        $("#ddlState").on('change', function () {
+            LoadCity($("#ddlState").val(),1);
+        });
+
+        $("#profile-img").change(function () {
+
+            var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $("#profile-img").val('');
+                alert("Only formats are allowed : " + fileExtension.join(', '));
+            } else {
+                readURL(this);
+            }
+            
+        });
+
+        function LoadState() {
+
+            var control = $("#ddlState");
+
+            control.attr('disabled', 'disabled');
+            control.prepend($('<option></option>').html('Loading...'));
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/StatesByCountry',
+                data: { parent_id: CountryId },
+                success: function (data) {
+
+                    control.empty();
+                    $("#ddlcity").empty();
+
+                    control.append($('<option>').text("Select").attr('value', "").attr('selected', 'selected'));
+
+                    $.each(data.data, function (index, value) {
+                        if (value["Active"] == true) {
+                            control.append($('<option>').text(value["Title"]).attr('value', value["Id"]));
+                        }
+                    });
+
+                    if (StateId > 0) {
+                        control.val(StateId);
+                    }
+
+                },
+                failure: function (data) {
+                },
+                complete: function () {
+                    control.removeAttr('disabled');
+                }
+            });
+
+        }
+
+        function LoadCity(_StateId,IsChange) {
+
+            var control = $("#ddlCity");
+
+            control.attr('disabled', 'disabled');
+            control.prepend($('<option></option>').html('Loading...'));
+            //alert($("#ddlState").val());
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/CitiesByState',
+                data: { parent_id: _StateId },
+                success: function (data) {
+
+                    control.empty();
+
+                    control.append($('<option>').text("Select").attr('value', "0").attr('selected', 'selected'));
+
+                    $.each(data.data, function (index, value) {
+                        if (value["Active"] == true) {
+                            control.append($('<option>').text(value["Name"]).attr('value', value["Id"]));
+                        }
+                    });
+
+                    if (IsChange == 0) {
+                        control.val(CityId);
+                    } else {
+                        control.val(0);
+                    }
+                },
+                failure: function (data) {
+                },
+                complete: function () {
+                    control.removeAttr('disabled');
+                }
+            });
+
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#profile-img-tag').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function Validation() {
+
+            return true;
+
+            var hasFocus = false;
+            var errCount = 0;
+
+            if ($('#txtName').val() == '') {
+
+                $('#txtName').addClass('has-error');
+                $('#txtName').parent().find('.input-error').show().css('display', 'inline-block');
+
+                if (!hasFocus) {
+                    $('#txtName').focus();
+                    hasFocus = true;
+                }
+                errCount++;
+            }
+            else {
+                $('#txtName').removeClass('has-error');
+                $('#txtName').find('.input-error').hide();
+            }
+
+            if ($('#txtEmail').val() == '') {
+
+                $('#txtEmail').addClass('has-error');
+                $('#txtEmail').parent().find('.input-error').show().css('display', 'inline-block');
+
+                if (!hasFocus) {
+                    $('#txtEmail').focus();
+                    hasFocus = true;
+                }
+                errCount++;
+            }
+            else {
+                $('#txtEmail').removeClass('has-error');
+                $('#txtEmail').find('.input-error').hide();
+            }
+
+            if ($('#txtSubject').val() == '') {
+
+                $('#txtSubject').addClass('has-error');
+                $('#txtSubject').parent().find('.input-error').show().css('display', 'inline-block');
+
+                if (!hasFocus) {
+                    $('#txtSubject').focus();
+                    hasFocus = true;
+                }
+                errCount++;
+            }
+            else {
+                $('#txtSubject').removeClass('has-error');
+                $('#txtSubject').find('.input-error').hide();
+            }
+
+            if ($('#txtMessage').val() == '') {
+
+                $('#txtMessage').addClass('has-error');
+                $('#txtSubject').parent().find('.input-error').show().css('display', 'inline-block');
+
+                if (!hasFocus) {
+                    $('#txtMessage').focus();
+                    hasFocus = true;
+                }
+                errCount++;
+            }
+            else {
+                $('#txtMessage').removeClass('has-error');
+                $('#txtMessage').find('.input-error').hide();
+            }
+
+            if (errCount > 0)
+                return false;
+            else
+                return true;
+
+        }
+
+    </script>
+}
+

@@ -1,0 +1,10 @@
+C:\Working Files\Bailssoft\SmartBooksWeb\SmartBooks.Models\bin\Debug\SmartBooks.Models.dll
+C:\Working Files\Bailssoft\SmartBooksWeb\SmartBooks.Models\bin\Debug\SmartBooks.Models.pdb
+C:\Working Files\Bailssoft\SmartBooksWeb\SmartBooks.Models\obj\Debug\SmartBooks.Models.csprojResolveAssemblyReference.cache
+C:\Working Files\Bailssoft\SmartBooksWeb\SmartBooks.Models\obj\Debug\SmartBooks.Models.dll
+C:\Working Files\Bailssoft\SmartBooksWeb\SmartBooks.Models\obj\Debug\SmartBooks.Models.pdb
+C:\Working Files\Bailssoft\SmartBooksOnline\SmartBooks.Models\bin\Debug\SmartBooks.Models.dll
+C:\Working Files\Bailssoft\SmartBooksOnline\SmartBooks.Models\bin\Debug\SmartBooks.Models.pdb
+C:\Working Files\Bailssoft\SmartBooksOnline\SmartBooks.Models\obj\Debug\SmartBooks.Models.csprojResolveAssemblyReference.cache
+C:\Working Files\Bailssoft\SmartBooksOnline\SmartBooks.Models\obj\Debug\SmartBooks.Models.dll
+C:\Working Files\Bailssoft\SmartBooksOnline\SmartBooks.Models\obj\Debug\SmartBooks.Models.pdb

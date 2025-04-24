@@ -1,0 +1,14 @@
+D:\Softwares\Data\SmartEcommerce\SmartBooksOnline\SmartBooks.Models\bin\Debug\SmartBooks.Models.dll
+D:\Softwares\Data\SmartEcommerce\SmartBooksOnline\SmartBooks.Models\bin\Debug\SmartBooks.Models.pdb
+D:\Softwares\Data\SmartEcommerce\SmartBooksOnline\SmartBooks.Models\obj\Debug\SmartBooks.Models.dll
+D:\Softwares\Data\SmartEcommerce\SmartBooksOnline\SmartBooks.Models\obj\Debug\SmartBooks.Models.pdb
+D:\Softwares\Data\SmartEcommerce\SmartEcommerce\SmartEcommerce.Models\bin\Debug\SmartEcommerce.Models.dll
+D:\Softwares\Data\SmartEcommerce\SmartEcommerce\SmartEcommerce.Models\bin\Debug\SmartEcommerce.Models.pdb
+D:\Softwares\Data\SmartEcommerce\SmartEcommerce\SmartEcommerce.Models\obj\Debug\SmartEcommerce.Models.csprojResolveAssemblyReference.cache
+D:\Softwares\Data\SmartEcommerce\SmartEcommerce\SmartEcommerce.Models\obj\Debug\SmartEcommerce.Models.dll
+D:\Softwares\Data\SmartEcommerce\SmartEcommerce\SmartEcommerce.Models\obj\Debug\SmartEcommerce.Models.pdb
+C:\Working Files\SmartEcommerce\SmartEcommerce.Models\bin\Debug\SmartEcommerce.Models.dll
+C:\Working Files\SmartEcommerce\SmartEcommerce.Models\bin\Debug\SmartEcommerce.Models.pdb
+C:\Working Files\SmartEcommerce\SmartEcommerce.Models\obj\Debug\SmartEcommerce.Models.dll
+C:\Working Files\SmartEcommerce\SmartEcommerce.Models\obj\Debug\SmartEcommerce.Models.pdb
+C:\Working Files\SmartEcommerce\SmartEcommerce.Models\obj\Debug\SmartEcommerce.Models.csprojResolveAssemblyReference.cache

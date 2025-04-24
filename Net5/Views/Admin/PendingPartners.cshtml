@@ -1,0 +1,379 @@
+﻿
+@{
+    ViewBag.Title = "PendingPartners";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeadSection {
+    
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            Pending Partners
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Partners</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Pending Partners</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button id="btn_approve" class="btn btn-info btn-sm" style="width: 100px;" disabled><i class="fa fa-check"></i> Approve</button>
+                    <button id="btn_reject" class="btn btn-danger btn-sm" style="width: 100px;" disabled><i class="fa fa-times"></i> Reject</button>
+                    <button id="btn_details" class="btn btn-primary btn-sm" style="width: 100px;" disabled><i class="fa fa-file"></i> Details</button>
+                    <a href="/admin/dashboard" class="btn btn-secondary btn-sm" style="width: 100px;"><i class="fa fa-arrow-circle-left"></i> Back</a>
+
+                    <div class="float-right">
+                        <a class="btn btn-success btn-sm" id="btn_current" style="width: 100px;" href="#">Pending</a>
+                        <a class="btn btn-outline-danger btn-sm" id="btn_rejected" style="width: 100px;" href="#">Reject</a>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive table-current-listing">
+                        <table id="current-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Partner Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Country</th>
+                                    <th>Email</th>
+                                    <th>Mobile #</th>
+                                    <th style="width: 95px;">Requested On</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="table-responsive table-reject-listing" style="display: none;">
+                        <table id="reject-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Partner Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Country</th>
+                                    <th>Email</th>
+                                    <th>Mobile #</th>
+                                    <th style="width: 95px;">Requested On</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_setup" tabindex="-1" role="dialog" aria-labelledby="modal_setup" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">Details Partner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-sample" method="post" id="entry-form" action="">
+                    <div class="alert alert-danger error_msg" style="display: none;">This is error</div>
+                    <div class="row">
+                        <div class="col-sm-9">
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtid">ID</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="txtid" name="txtid" readonly />
+                                </div>
+                                <label class="col-sm-5"><small>* Auto Generated</small></label>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtname">Full Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtname" name="txtname" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txttype">Type</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txttype" name="txttype" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtcategory">Category</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtcategory" name="txtcategory" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtcontactperson">Contact Person</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtcontactperson" name="txtcontactperson" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txttelephone">Telephone</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txttelephone" name="txttelephone" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txttype">Mobile No.</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtmobileno" name="txtmobileno" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtemailaddress">Email Address</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtemailaddress" name="txtemailaddress" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtcountry">Country</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtcountry" name="txtcountry" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtstate">State</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtstate" name="txtstate" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtcity">City</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtcity" name="txtcity" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtemailaddress">Address</label>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" name="txtaddress" id="txtaddress"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtcontentype">Type of Content Produced</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtcontentype" name="txtcontentype" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="txtcontentypeupload">Type of Content you plan to upload</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="txtcontentypeupload" name="txtcontentypeupload" autocomplete="off" />
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-sm-3 text-center">
+                            <form id="form1" method="post" action="/Inventory/ImportItems">
+                                <img id="profile_picture_img" src="/content/images/placeholder/product.jpg" style="width: 100%; height: auto;" alt="user image">
+                                <input name="image" type="file" style="display: none;" id="hidden_file" />
+                                <input type="hidden" id="hidden_image_name" name="hidden_image_name" value="" />
+                            </form>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterSection {
+
+    <script>
+
+        var current_table = bindGrid($('#current-listing'), '/Admin/PendingPartner');
+        var reject_table = bindGrid($('#reject-listing'), '/Admin/RejectPartner');
+
+        $('#current-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#btn_approve").attr('disabled', 'disabled');
+                $("#btn_reject").attr('disabled', 'disabled');
+                $("#btn_details").attr('disabled', 'disabled');
+            }
+            else {
+                current_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#btn_approve").removeAttr('disabled');
+                $("#btn_reject").removeAttr('disabled');
+                $("#btn_details").removeAttr('disabled');
+            }
+        });
+
+        $("#btn_current").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-reject-listing").hide();
+            $(".table-current-listing").fadeIn();
+
+            $("#btn_current").removeClass('btn-outline-success').addClass('btn-success');
+            $("#btn_rejected").removeClass('btn-danger').addClass('btn-outline-danger');
+
+            $("#btn_approve").show();
+            $("#btn_reject").show();
+            $("#btn_details").show();
+
+        });
+
+        $("#btn_rejected").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-current-listing").hide();
+            $(".table-reject-listing").fadeIn();
+
+            $("#btn_current").removeClass('btn-success').addClass('btn-outline-success');
+            $("#btn_rejected").removeClass('btn-outline-danger').addClass('btn-danger');
+
+            $("#btn_approve").hide();
+            $("#btn_reject").hide();
+            $("#btn_details").hide();
+        });
+
+        $("#btn_approve").on("click", function (e) {
+            e.preventDefault();
+            var id = current_table.$('tr.selected')[0].id;
+            pendingPartnerStatus(id, 1, "/Admin/StatusPartners", "/admin/pendingpartners");
+        });
+
+        $("#btn_reject").on("click", function (e) {
+            e.preventDefault();
+            var id = current_table.$('tr.selected')[0].id;
+            pendingPartnerStatus(id, 3, "/Admin/StatusPartners", "/admin/pendingpartners");
+        });
+
+        $("#btn_details").on("click", function (e) {
+            e.preventDefault();
+            //$('input').attr('readonly', true);
+            $('input[type="text"], textarea').attr('readonly', 'readonly');
+            var id = current_table.$('tr.selected')[0].id;
+            $("#modal_setup").modal('show');
+            //return false;
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/PartnerById',
+                data: { 'id': id },
+                success: function (data) {
+                    $("#txtid").val(data["Id"]);
+                    $("#txtname").val(data["FullName"]);
+                    $("#txttype").val(data["PartnerType"]["Title"]);
+                    $("#txtcategory").val(data["PartnerCategory"]["Title"]);
+
+                    $("#txtcontactperson").val(data["ContactPerson"]);
+                    $("#txttelephone").val(data["Telephone"]);
+                    $("#txtmobileno").val(data["MobileNo"]);
+                    $("#txtemailaddress").val(data["EmailAddress"]);
+
+                    $("#txtcountry").val(data["Country"]["Title"]);
+                    $("#txtstate").val(data["State"]["Title"]);
+                    $("#txtcity").val(data["City"]["Name"]);
+                    $("#txtaddress").val(data["Address"]);
+                    $("#txtcontentype").val(data["PartnerContentType"]["Title"]);
+                    $("#txtcontentypeupload").val(data["PartnerContentTypeUploadName"]);
+                    $("#profile_picture_img").attr('src', '/content/uploads/users/' + data['ProfilePicture']);
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                always: function () {
+                    console.log('i am in always');
+                }
+            });
+        });
+
+        function bindGrid(table, url) {
+            return table.DataTable({
+                "ajax": {
+                    'type': 'POST',
+                    'url': url,
+                    'data': {},
+                },
+                'processing': true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>'
+                },
+                "drawCallback": function () {
+                    $('.dataTables_paginate > .pagination').addClass('rounded-flat');
+                },
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                }],
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "FullName" },
+                    {
+                        "data": "PartnerType",
+                        "render": function (data, type, row, meta) {
+                            return data["Title"];
+                        }
+                    },
+                    {
+                        "data": "PartnerCategory",
+                        "render": function (data, type, row, meta) {
+                            return data["Title"];
+                        }
+                    },
+                    {
+                        "data": "Country",
+                        "render": function (data, type, row, meta) {
+                            return data["Title"];
+                        }
+                    },
+                    { "data": "EmailAddress" },
+                    { "data": "MobileNo" },
+                    {
+                        "data": "CreatedOn",
+                        "render": function (data, type, row, meta) {
+                            return getDataTableDate(data);
+                        }
+                    }
+                ]
+            });
+        }
+
+    </script>
+
+}
+

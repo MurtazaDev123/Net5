@@ -1,0 +1,14 @@
+D:\Softwares\Data\Net5\Net5\Net5.Models\bin\Debug\SmartEcommerce.Models.dll
+D:\Softwares\Data\Net5\Net5\Net5.Models\bin\Debug\SmartEcommerce.Models.pdb
+D:\Softwares\Data\Net5\Net5\Net5.Models\obj\Debug\Net5.Models.csprojResolveAssemblyReference.cache
+D:\Softwares\Data\Net5\Net5\Net5.Models\obj\Debug\SmartEcommerce.Models.dll
+D:\Softwares\Data\Net5\Net5\Net5.Models\obj\Debug\SmartEcommerce.Models.pdb
+C:\Working Files\Net5\Net5.Models\bin\Debug\SmartEcommerce.Models.dll
+C:\Working Files\Net5\Net5.Models\bin\Debug\SmartEcommerce.Models.pdb
+C:\Working Files\Net5\Net5.Models\obj\Debug\SmartEcommerce.Models.dll
+C:\Working Files\Net5\Net5.Models\obj\Debug\SmartEcommerce.Models.pdb
+D:\Softwares\Data\Net5\Sourcetree\Net5.Models\bin\Debug\SmartEcommerce.Models.dll
+D:\Softwares\Data\Net5\Sourcetree\Net5.Models\bin\Debug\SmartEcommerce.Models.pdb
+D:\Softwares\Data\Net5\Sourcetree\Net5.Models\obj\Debug\SmartEcommerce.Models.dll
+D:\Softwares\Data\Net5\Sourcetree\Net5.Models\obj\Debug\SmartEcommerce.Models.pdb
+D:\Softwares\Data\Net5\Sourcetree\Net5.Models\obj\Debug\Net5.Models.csprojResolveAssemblyReference.cache

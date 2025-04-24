@@ -1,0 +1,665 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.MainTitle = "Net Five";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Net Five @(ViewBag.PageTitle != null ? " - " + ViewBag.PageTitle : "" ) </title>
+    <link href="~/content/web/img/favicon.png" rel="icon" type="image/x-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/content/web/css/bootstrap.css">
+    <link rel="stylesheet" href="/content/web/css/main.css">
+    <link rel="stylesheet" href="~/content/web/css/jquery.toast.css">
+
+    <style>
+        .noHover{ pointer-events: none; }
+    </style>
+
+    @RenderSection("HeadSection", required: false)
+
+</head>
+<body>
+    <header>
+        <div class="topHeader" style="display:none">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-md-6">
+                        <div class="leftTopHeader">
+                            <div class="supportEmailTel">
+                                <a href="#">Email : support@netfive.tv</a>
+                                <a href="#">Tel : +1 123 456 7890</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-6">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scrollHeader">
+            <div class="mainHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mainHeaderInner">
+                                <div class="logo">
+                                    <a href="/"><img src="/content/web/img/logo.png"></a>
+                                </div>
+                                <div class="searchCategory">
+                                    <a class="section-heading collapaseLink" id="UsefullInformationCollapse" data-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        <button class="btn btn-blue" type="button"><img src="/content/web/img/magnify.svg"></button>
+                                    </a>
+                                    <form method="get" action="/results" id="formsearch">
+                                        <div class="input-group collapse dont-collapse-sm" id="collapse">
+                                            @*<input type="hidden" name="search_param" value="all" id="search_param">*@
+                                            <input type="text" class="form-control" id="search_query" name="search_query" placeholder="Search Here...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-blue" type="submit"><img src="/content/web/img/magnify.svg"></button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="rightAccountHeader">
+
+                                    @if (BusinessLogic.clsWebSession.LoginId == 0)
+                                    {
+                                        <div class="accountPop">
+                                            <span><span class="hideM">Have an account?</span> <a href="/login">Login</a></span>
+                                            <span><a href="/signup">Sign up</a></span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="afterLogin">
+                                            <div class="userAccountImg">
+                                                <img src="~/@BusinessLogic.clsWebSession.ProfileImageURL" style="width:35px; height:35px;">
+                                            </div>
+                                            <div class="userName">
+                                                Hello, <span>@BusinessLogic.clsWebSession.UserName</span>
+                                            </div>
+                                            <div class="userAccountMenu">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        My Account
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="/edit-profile">Edit Profile</a>
+                                                        <a class="dropdown-item" href="/my-list">My List</a>
+                                                        @if (BusinessLogic.clsWebSession.SubscriptionType != "Free")
+                                                        {
+                                                            <a class="dropdown-item" href="/my-subscription">Subscription</a>
+                                                        }
+                                                        <a class="dropdown-item" href="/change-password">Change Password</a>
+                                                        <a class="dropdown-item" href="/Web/SignOut">Sign Out</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menuHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <a class="collapaseLinkMenu viewCat" id="MenuCollapse" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample1">View Categories</a>
+                            <ul class="nav justify-content-center collapse dont-collapse-m" id="collapseExample">
+                                
+                                @{ 
+                                    string url = Request.Url.AbsoluteUri.Replace("http://","").Replace("https://", "");
+                                    if (url.IndexOf('/') >= 0)
+                                    {
+                                        url = url.Substring(url.IndexOf('/')+1).ToLower();
+                                    }
+                                }
+
+                                <li class="nav-item @(url == "" || url == "web/index" ? "active" : "")">
+                                    <a class="nav-link" href="/">Home</a>
+                                </li>
+                                <li class="nav-item @(url == "live-tv" ? "active" : "")">
+                                    <a class="nav-link" href="/live-tv">Live TV</a>
+                                </li>
+                                <li class="nav-item @(url == "live-videos" ? "active" : "")">
+                                    <a class="nav-link" href="/live-videos">Live Videos</a>
+                                </li>
+                                <li class="nav-item @(url == "programs" ? "active" : "")">
+                                    <a class="nav-link" href="/programs">Programs</a>
+                                </li>
+                                <li class="nav-item @(url == "category" ? "active" : "")">
+                                    <a class="nav-link" href="/category">Category</a>
+                                </li>
+                                <li class="nav-item @(url == "library" ? "active" : "")">
+                                    <a class="nav-link" href="/library">Library</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    @RenderBody()
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="row top">
+                        <div class="col-4">
+                            <div class="footerNav">
+                                <h4>Company</h4>
+                                <ul>
+                                    <li><a href="/about-us">About Us</a></li>
+                                    <li><a href="/contact-us">Contact Us</a></li>
+                                    <li><a href="/partner-request">Become Partner</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="footerNav">
+                                <h4>Resources</h4>
+                                <ul>
+                                    <li><a href="/live-tv">Live TV</a></li>
+                                    <li><a href="/programs">Program</a></li>
+                                    <li><a href="/library">Library</a></li>
+                                    <li><a href="/category">Category</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="footerNav">
+                                <h4>Help Center</h4>
+                                <ul>
+                                    <li><a href="/faqs">FAQ's</li>
+                                    <li><a href="/terms-and-conditions">Term and Condition</a></li>
+                                    <li><a href="/privacy-and-policy">Privacy Policy</a></li>
+                                    @if (BusinessLogic.clsWebSession.SubscriptionType != "Free")
+                                    {
+                                        <li><a href="/payment">Payment</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="row bottom">
+                        <div class="col-8 edit">
+                            <div class="left">
+                                <div class="footerNav">
+                                    <h4>My Account</h4>
+                                    <ul>
+
+                                        @if (!BusinessLogic.clsWebSession.HasLogin)
+                                        {
+                                            <li><a href="/login">Login</a></li>
+                                            <li><a href="/signup">Sign Up</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="/edit-profile">Edit Profile</a></li>
+                                            <li><a href="/my-list">My List</a></li>
+
+                                            if (BusinessLogic.clsWebSession.SubscriptionType != "Free")
+                                            {
+                                                <li><a href="/my-subscription">Subscription</a></li>
+                                            }
+                                            <li><a href="/change-password">Change Password</a></li>
+                                        }
+
+                                        @*<li><a href="/my-videos">My Video</a></li>
+                                        <li><a href="/my-list">My List</a></li>
+                                        <li><a href="/profile">Profile</a></li>*@
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-4 edit">
+                            <div class="right">
+                                <a href="https://play.google.com/store/apps/details?id=com.netfive.userapp&hl=en" target="_blank"><img src="/content/web/img/play-store.png"></a>
+                                <ul class="footerSocialIcon">
+                                    <li style="display:none;"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li style="display:none;"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li style="display:none;"><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    <li style="display:none;"><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                                </ul>
+                                @if (BusinessLogic.clsWebSession.SubscriptionType != "Free")
+                                {
+                                    <img src="/content/web/img/cards.png">
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="copyrightInner">
+                            <p>Copyright © @DateTime.Now.Year All Rights Reserved - Net Five <div class="footerPolicy" style="display:none;"><a href="/privacy-and-policy">Privacy Policy</a> | <a href="/terms-and-conditions">Terms Of Services</a></div></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="action action--open" aria-label="Open Menu">
+        <span class="icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg>
+        </span>
+    </button>
+
+    <nav id="ml-menu" class="menu">
+        <button class="action action--close" aria-label="Close Menu"><span class="icon icon--cross"></span></button>
+        <div class="menu__wrap">
+            <ul data-menu="main" class="menu__level" tabindex="-1" role="menu" aria-label="All Categories">
+                <li class="menu__item" role="menuitem"><a class="menu__link" href="#" onclick="window.location.href='/';">Home</a></li>
+                <li class="menu__item" role="menuitem"><a class="menu__link" href="#" onclick="window.location.href='/live-tv';">Live TV</a></li>
+                <li class="menu__item" role="menuitem"><a class="menu__link" href="#" onclick="window.location.href='/live-videos';">Live Videos</a></li>
+                <li class="menu__item" role="menuitem"><a class="menu__link" href="#" onclick="window.location.href='/programs';">Programs</a></li>
+                <li class="menu__item" role="menuitem"><a class="menu__link" href="#" onclick="window.location.href='/category';">Category</a></li>
+                <li class="menu__item" role="menuitem"><a class="menu__link" href="#" onclick="window.location.href='/library';">Library</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="overlayBG"></div>
+   
+    <!-- Login Modal -->
+    <div class="modal fade logSignpopup" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="loginPopupLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="accountSectionInner">
+                        <div class="logo">
+                            <a href="#"><img src="/content/web/img/logo.png"></a>
+                        </div>
+                        <ul class="navAccount">
+                            <li><a href="/signUp">Register</a></li>
+                            <li class="active"><a href="#">Login</a></li>
+                        </ul>
+                        <div class="accountformDetail">
+                            <form id="form-login-popup" action="#" method="post">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" class="form-control" name="txtusername" id="txtusername" placeholder="User ID / Email Address">
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" class="form-control" name="txtpassword" id="txtpassword" placeholder="Enter Your Password">
+                                </div>
+                                <div class="signForgot">
+                                    <div class="signCheck">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Keep Me Signed In</label>
+                                        </div>
+                                    </div>
+                                    <div class="forgotLink">
+                                        <a href="/forget-password">Forgot Password?</a>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger" id="invalid_msg" style="display: none;">
+                                    <strong>Invalid User id or password</strong>
+                                </div>
+                                <div class="form-group">
+                                    <input class="btn btn-red" type="submit" value="Sign In">
+                                </div>
+                            </form>
+                        </div>
+                        @*<div class="quickAccess">
+                            <p>Quick Access With</p>
+                            <ul>
+                                <li>
+                                    <a href="#" class="fb"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="tw"><i class="fa fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="go"><i class="googleIcon"></i></a>
+                                </li>
+                            </ul>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/web/js/jquery-3.4.1.min.js"></script>
+    <script src="/scripts/web/js/modernizr-custom.js"></script>
+    <script src="/scripts/web/js/bootstrap.bundle.min.js"></script>
+    <script src="/scripts/web/js/bootstrap-select.min.js"></script>
+    <script src="/scripts/web/js/slick.js"></script>
+    <script src="/scripts/web/js/classie.js"></script>
+    <script src="~/scripts/web/js/jquery.toast.js"></script>
+    <script src="/scripts/web/js/main.js"></script>
+    <script src="~/scripts/custom/functions.js"></script>
+
+    <script>
+
+        var LoginId = @BusinessLogic.clsWebSession.LoginId;
+        var VideoId = 0;
+        var VideoName = '';
+        var IsList = 0;
+        var VideoText = '';
+        var IsRedirect = '';
+
+        $(document).ready(function () {
+
+            $("#formsearch").on('submit', function (e) {
+                if ($("#search_query").val() == "") {
+                    return false;
+                }
+            });
+
+            $(document).on('click', '.btnAddToList', function () {
+
+                VideoId = this.id;
+                VideoName = $(this).data('videoname');
+                IsRedirect = $(this).data('isredirect');
+
+                if (LoginId > 0) {
+    
+                    $(this).data('islist') == 0 ? $(this).data('islist', '1') : $(this).data('islist', '0');
+                    IsList = $(this).data('islist');
+
+                    if (IsList == 1) {
+                        $(this).find('span').html('REMOVE');
+                        $(this).find("path").attr("d", "M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z");
+                    }else{
+                        $(this).find('span').html('SAVE');
+                        $(this).find("path").attr("d", "M15.5224 9.4408H9.34527V16H6.14527V9.4408H0V6.52736H6.14527V0H9.34527V6.52736H15.5224V9.4408Z");
+                    }
+
+                    //console.log(VideoText);
+                    //return false;
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Web/VideoAddToList',
+                        data: {
+                            'LoginId': LoginId,
+                            'VideoId': VideoId,
+                            'IsList': IsList
+                        },
+                        success: function (data) {
+
+                            console.log(data);
+
+                            if (data.ErrorCode == "000") {                                   
+                                VideoText = IsList == 1 ? " Added to List" : " Removed from List";
+                                ToastSuccess('VIDEO',VideoName + VideoText);
+
+                                if (IsRedirect == "1") {
+                                    setTimeout(function () { window.location.reload(); }, 3000);
+                                }
+
+                            } 
+                            else {
+                                ToastError('VIDEO','Error Occured..!');
+                            }
+
+                        },
+                        failure: function (data) {
+                            console.log("Save failed result :", data);
+                        },
+                        complete: function () {
+
+                        }
+                    });
+
+                }
+                else{
+                    //$('#ModalLogin').modal({ backdrop: 'static', keyboard: false });
+                    $('#ModalLogin').modal('show');
+                }
+                return false;
+            });
+
+            $("#form-login-popup").on('submit', function (e) {
+            
+                e.preventDefault();
+
+                if ($("#txtusername").val().trim() == "" || $("#txtpassword").val().trim() == "") {
+                    $("#txtusername").focus();
+                    $("#invalid_msg").show().html("<strong>Authentication failed. You entered an incorrect username or password.</strong>");
+                    return;
+                }
+
+                //if ($("#txtpassword").val().trim() == "") {
+                //    $("#txtpassword").focus();
+                //    $("#invalid_msg").show().html("<strong>Kindly enter Password</strong>");
+                //    return;
+                //}
+
+                $("#invalid_msg").hide();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Web/LoginRequest',
+                    data: {
+                        'user_name': $("#txtusername").val(),
+                        'password': $("#txtpassword").val()
+                    },
+                    success: function (data) {
+                        if (data.Success == 1) {
+                            window.location.reload();
+                        } else {
+                            $("#invalid_msg").show().html("<strong>Stop ! Invalid User ID and Password.</strong>");
+                        }
+                    },
+                    failure: function (data) {
+                        console.log("Save failed result :", data);
+                        $("#invalid_msg").show().html(data);
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+            });
+
+            $(document).on("click", ".btnSubscribe", function(e){
+                e.preventDefault();
+                
+                if (LoginId == 0) {
+                    $('#ModalLogin').modal('show');
+                    return false;
+                }
+
+                var subscriber_id = $("#user_id").val();
+                var subscribe = $("#is_subscribed").val();  //$(this).data("subscribe");
+                var text = "Subscription added";
+
+                if (subscribe == "0") {
+                    $(".btnSubscribe").html('PROCESS...').attr('disabled', 'disabled');
+                }
+                
+                if (subscribe == "1") {
+                    $('#ModalSubscribed').modal('show');
+                    return false;
+                }
+
+                //alert(subscriber_id);
+                //return false;
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Web/SubscribeRequest',
+                    data: { 
+                        'subscriber_id': subscriber_id,
+                        'login_id': LoginId,
+                        'subscribe': 1 
+                    },
+                    success: function (data) {
+
+                        console.log(data);
+
+                        if (data.ErrorCode == "000") {
+                            $("#is_subscribed").val("1");
+                            $("#divSubscribe").html("<a href='#' class='btn btn-secondary btnSubscribe'>SUBSCRIBED</a>");
+                            $(".userName").find('p').text(data.TotalSubscribers + ' subscribers');
+
+                            $(".subscribeAlert").append('<div class="AlertSub"><a href="#" class="btnSubscriberNotification"><i class="fa fa-bell-slash" aria-hidden="true"></i></a></div>');
+
+                            ToastSuccess('SUBSCRIPTION',text);
+                        } else {
+                            ToastError('SUBSCRIPTION','Error Occured..!');
+                        }
+                    },
+                    failure: function (data) {
+                        console.log("Save failed result :", data);
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+                return false;
+
+            });
+
+            $(document).on("click", "#btnUnSubscribe", function(e){
+                e.preventDefault();
+
+                if (LoginId == 0) {
+                    $('#ModalLogin').modal('show');
+                    return false;
+                }
+
+                var subscriber_id = $("#user_id").val();
+                var subscribe = 0;
+                var text = "Subscription removed";
+
+                $("#btnUnSubscribe").attr("disabled", true);
+                $("#btnUnSubscribe").text("PROCESS..");
+
+                //$("#btnUnSubscribe").val('PROCESS...').attr('disabled', 'disabled');
+        
+                //return false;
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Web/SubscribeRequest',
+                    data: { 
+                        'subscriber_id': subscriber_id,
+                        'login_id': LoginId,
+                        'subscribe': subscribe 
+                    },
+                    success: function (data) {
+
+                        console.log(data);
+
+                        if (data.ErrorCode == "000") {
+
+                            $('#ModalSubscribed').modal('hide');
+                            $("#is_subscribed").val("0");
+                            $("#divSubscribe").html("<a href='#' class='btn btn-red btnSubscribe'>SUBSCRIBE</a>");
+                            $(".userName").find('p').text(data.TotalSubscribers + ' subscribers');
+                            $(".subscribeAlert").find('.AlertSub').remove();
+
+
+                            ToastSuccess('SUBSCRIPTION',text);
+
+                        } else {
+                            $('#ModalSubscribed').modal('hide');
+                            ToastError('SUBSCRIPTION','Error Occured..!');
+                        }
+                    },
+                    failure: function (data) {
+                        console.log("Save failed result :", data);
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+                return false;
+
+            });
+
+            $(document).on('click', '.btnSubscriberNotification', function(e) {
+
+                e.preventDefault();
+                var thatObject = $(this);
+
+                var notification = true;
+                if ($(thatObject).hasClass('active')) {
+                    notification = false;
+                }
+
+                var subscriber_id = $("#user_id").val();
+                $.ajax({
+                    type: "POST",
+                    url: '/Web/SubscribeNotification',
+                    data: { 
+                        'subscriber_id': subscriber_id,
+                        'notification': notification 
+                    },
+                    success: function (data) {
+
+
+                        if (data.ErrorCode == "000") {
+
+                            if ($(thatObject).hasClass('active')) {
+                                $(thatObject).find('i').removeClass('fa-bell').addClass('fa-bell-slash');
+                                $(thatObject).removeClass('active');
+                            } else {
+                                $(thatObject).addClass('active');
+                                $(thatObject).find('i').removeClass('fa-bell-slash').addClass('fa-bell');
+                            }
+
+                        } else {
+                            alert('failed');
+                        }
+                    },
+                    failure: function (data) {
+                        console.log("Save failed result :", data);
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+
+                
+            });
+
+        });
+
+    </script>
+
+    @RenderSection("FooterSection", required: false)
+
+</body>
+</html>

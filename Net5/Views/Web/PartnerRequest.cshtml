@@ -1,0 +1,404 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Partner Request - Net5</title>
+    <link href="~/content/web/img/favicon.png" rel="icon" type="image/x-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/content/web/css/bootstrap.css">
+    <link rel="stylesheet" href="/content/web/css/main.css">
+    <link rel="stylesheet" href="http://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link rel="stylesheet" href="~/content/web/css/jquery.toast.css">
+    <link rel="stylesheet" href="~/scripts/vendors/parsley/src/parsley.css">
+    <link rel="stylesheet" href="~/scripts/vendors/select2/dist/css/select2.min.css">
+
+    <style>
+        .alert {
+            display: none;
+        }
+
+        .requirements {
+            list-style-type: none;
+        }
+
+        .wrong .fa-check {
+            display: none;
+        }
+
+        .good .fa-times {
+            display: none;
+        }
+
+        .has-error {
+            border-color: red !important;
+        }
+        .accountSection .accountSectionInner .navAccount li {
+            width:100%!important;
+        }
+
+        p.parsley-success {
+            color: #468847;
+            background-color: #DFF0D8;
+            border: 1px solid #D6E9C6
+        }
+
+        p.parsley-error {
+            color: #B94A48;
+            background-color: #F2DEDE;
+            border: 1px solid #EED3D7
+        }
+
+        ul.parsley-errors-list {
+            list-style: none;
+            color: #E74C3C;
+            padding-left: 0
+        }
+
+        input.parsley-error,
+        textarea.parsley-error,
+        select.parsley-error {
+            background: #FAEDEC;
+            border: 1px solid #E85445
+        }
+
+        .btn-group .parsley-errors-list {
+            display: none
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <section class="accountSection longForm">
+        <div class="accountSectionInner">
+            <div class="logo">
+                <a href="/"><img src="/content/web/img/logo.png"></a>
+            </div>
+            <ul class="navAccount">
+                <li class="active"><a href="javascript:void(0);">Partner Request</a></li>
+            </ul>
+            <div class="accountformDetail">
+                
+                <form id="myForm" autocomplete="off" data-parsley-validate="true">
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" class="form-control" name="txtfullname" id="txtfullname" placeholder="Full Name" required="required" autocomplete="off" data-parsley-required="true">
+                        <div class="input-error form-control-input" style="color: Red; display: none;font-size:smaller;">Please enter fullname.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="ddltype" name="ddltype" class="form-control" required>
+                            <option value="">Select Type</option>
+                            @{
+                                List<SmartEcommerce.Models.Common.PartnerType> item = new BusinessLogic.Common().GetPartnerTypeByStatus(BusinessLogic.Status.Current);
+                                foreach (var i in item)
+                                {
+                                    <option value="@i.Id">@i.Title</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please choose a Country</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="ddlcategory" name="ddlcategory" class="form-control" required>
+                            <option value="">Select Category</option>
+                            @{
+                                List<SmartEcommerce.Models.Common.PartnerCategory> item2 = new BusinessLogic.Common().GetPartnerCategoryByStatus(BusinessLogic.Status.Current);
+                                foreach (var i in item2)
+                                {
+                                    <option value="@i.Id">@i.Title</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please choose a Country</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Person</label>
+                        <input type="text" class="form-control" name="txtcontactperson" id="txtcontactperson" placeholder="Contact Person" required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Telephone</label>
+                        <input type="text" class="form-control" name="txttelephone" id="txttelephone" placeholder="Telephone" required autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mobile No.</label>
+                        <input type="text" class="form-control" name="txtmobileno" id="txtmobileno" placeholder="Mobile No." required autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" class="form-control" name="txtemailaddress" id="txtemailaddress" placeholder="Email Address" required autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select id="ddlcountry" name="ddlcountry" class="form-control" required>
+                            <option value="">Select Country</option>
+                            @{
+                                List<SmartEcommerce.Models.Common.Country> item3 = new BusinessLogic.Common().GetCountryByStatus(BusinessLogic.Status.Current);
+                                foreach (var i in item3)
+                                {
+                                    <option value="@i.Id" data-masking="@i.Masking">@i.Title</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please choose a Country</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>State</label>
+                        <select class="form-control" id="ddlstate" name="ddlstate" required>
+                            <option value="">Select</option>
+                        </select>
+                        <div class="invalid-feedback">Please choose a State</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>City</label>
+                        <select class="form-control" id="ddlcity" name="ddlcity" required>
+                            <option value="">Select</option>
+                        </select>
+                        <div class="invalid-feedback">Please choose a City</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea rows="8" class="form-control" name="txtaddress" id="txtaddress" placeholder="Enter your address here"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type of Content Produced</label>
+                        <select id="ddlcontentype" name="ddlcontentype" class="form-control" required>
+                            <option value="">Select Type of Content Produced</option>
+                            @{
+                                List<SmartEcommerce.Models.Common.PartnerContentType> item4 = new BusinessLogic.Common().GetPartnerContentTypeByStatus(BusinessLogic.Status.Current);
+                                foreach (var i in item4)
+                                {
+                                    <option value="@i.Id">@i.Title</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please choose a Country</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type of Content you plan to upload</label>
+                        <select id="ddlcontentypeupload" name="ddlcontentypeupload" class="multiple-select2 form-control" multiple="multiple" required>
+                            @*<option value="">Type of Content you plan to upload</option>*@
+                            @{
+                                List<SmartEcommerce.Models.Product.Category> item5 = new BusinessLogic.Products().GetCategoryByStatus(BusinessLogic.Status.Current);
+                                foreach (var i in item5)
+                                {
+                                    <option value="@i.Id">@i.Title</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Please choose a Country</div>
+                    </div>
+
+                    <div class="alert alert-danger" id="invalid_msg" style="display: none;">
+                        <strong>All fields are required</strong>
+                    </div>
+
+                    <div class="textAgree">
+                        By creating an account, you agree to the <a href="#">Netfive.tv</a> <br><a href="/terms-and-conditions" target="_blank">Membership Agreement</a> and <a href="/privacy-and-policy" target="_blank">Privacy Policy</a>.
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-red" id="btnSubmit">Submit</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="/content/web/js/jquery-3.4.1.min.js"></script>
+    <script src="/content/web/js/bootstrap.bundle.min.js"></script>
+    <script src="/content/web/js/bootstrap-select.min.js"></script>
+    <script src="/content/web/js/slick.js"></script>
+    <script src="/content/web/js/main.js"></script>
+
+    <script>
+
+        var leng, bigLetter, num, specialChar;
+
+    </script>
+    
+    <script src="~/content/web/js/password_validation.js"></script>
+    <script src="~/content/web/js/jquery.inputmask.bundle.js"></script>
+    <script src="~/scripts/web/js/jquery.toast.js"></script>
+    <script src="~/scripts/custom/functions.js"></script>
+    <script src="~/scripts/vendors/parsley/dist/parsley.js"></script>
+    <script src="~/scripts/vendors/select2/dist/js/select2.full.min.js"></script>
+
+    <script>
+
+        //$("#txtphoneno").inputmask({ "mask": "+1 999 999 9999" });
+
+        //var SessionCountryId = @BusinessLogic.SBSession.GetSessionValue("SessionCountryId");
+
+        //GetState();
+
+        $("#ddlcontentypeupload").select2();
+
+        $("#btnSubmit").on('click', function (e) {
+
+            e.preventDefault();
+
+            $("#invalid_msg").hide();
+
+            //alert($("#ddlcontentypeupload").val());
+            //return false;
+
+            if (Validation()) {
+
+                $("#btnSubmit").attr("disabled", true);
+                $("#btnSubmit").text("PROCESS..");
+
+                var Form_data = new FormData($('#myForm')[0]);
+                //console.log(Form_data);
+                //return false;
+
+                $.ajax({
+                    url: "/Web/SavePartnerRequest",
+                    type: "POST",
+                    data: Form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function () {
+                        //$("#preview").fadeOut();
+                        //$("#err").fadeOut();
+                    },
+                    success: function (data) {
+                        console.log(data);
+
+                        $("#btnSubmit").text("Submit");
+
+                        if (data['ErrorCode'] == '000') {
+                            ToastSuccess('REQUEST COMPLETED', 'Request completed Successfully..!');
+                            setTimeout(function () { window.location.href = '/request-complete'; }, 3000);
+                        }
+                        else if (data['ErrorCode'] == '001') {
+                            $("#btnSubmit").removeAttr("disabled");
+                            ToastWarning('REQUEST ERROR', 'Email already in use..!');
+                        }
+                        else {
+                            $("#btnSubmit").removeAttr("disabled");
+                            ToastError('PROFILE UPDATE', 'Error Occured..!');
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        alert(e);
+                    }
+                });
+            }
+        });
+
+        $("#ddlcountry").on('change', function () {
+            GetState();
+        });
+
+        $("#ddlstate").on('change', function () {
+
+            var control = $("#ddlcity");
+
+            control.attr('disabled', 'disabled');
+            control.prepend($('<option></option>').html('Loading...'));
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/CitiesByState',
+                data: { parent_id: $("#ddlstate").val() },
+                success: function (data) {
+
+                    control.empty();
+
+                    control.append($('<option>').text("Select").attr('value', "").attr('selected', 'selected'));
+
+                    $.each(data.data, function (index, value) {
+                        if (value["Active"] == true) {
+                            control.append($('<option>').text(value["Name"]).attr('value', value["Id"]));
+                        }
+                    });
+                },
+                failure: function (data) {
+                },
+                complete: function () {
+                    control.removeAttr('disabled');
+                }
+            });
+        });
+
+        function GetState(){
+
+            var control = $("#ddlstate");
+
+            var masking = $(this).find(':selected').data('masking');
+            console.log(masking);
+
+            if (masking != "") {
+                $("#txtphoneno").inputmask({ "mask": masking });
+            } else {
+                $("#txtphoneno").inputmask({ "mask": "xxxxxxxxxxxxxxx" });
+            }
+
+            control.attr('disabled', 'disabled');
+            control.prepend($('<option></option>').html('Loading...'));
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/StatesByCountry',
+                data: { parent_id: $("#ddlcountry").val() },
+                //data: { parent_id: SessionCountryId },
+                success: function (data) {
+
+                    control.empty();
+                    //$("#ddlcity").empty();
+
+                    control.append($('<option>').text("Select").attr('value', "").attr('selected', 'selected'));
+
+                    $.each(data.data, function (index, value) {
+                        if (value["Active"] == true) {
+                            control.append($('<option>').text(value["Title"]).attr('value', value["Id"]));
+                        }
+                    });
+                },
+                failure: function (data) {
+                },
+                complete: function () {
+                    control.removeAttr('disabled');
+                }
+            });
+        }
+
+        function Validation() {
+            return $('#myForm').parsley().validate();
+        }
+
+    </script>
+
+</body>
+</html>
+

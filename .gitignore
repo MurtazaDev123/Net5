@@ -1,0 +1,12 @@
+/packages/
+/Prototype/
+/Documents/
+.vs/
+BusinessLogic/bin/
+BusinessLogic/obj/
+/Net5.Models/bin/
+/Net5/bin/
+/Net5/obj/
+*.dll
+*.pdb
+*.cache

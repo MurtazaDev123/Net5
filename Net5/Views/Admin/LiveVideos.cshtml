@@ -1,0 +1,606 @@
+﻿
+@{
+    ViewBag.Title = "LiveVideos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            Live Videos
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Setup</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Live Videos</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button id="add_popup" class="btn btn-primary btn-sm" style="width: 100px;"><i class="fa fa-plus"></i> Add new</button>
+                    <button id="edit_popup" class="btn btn-info btn-sm" style="width: 100px;" disabled><i class="fa fa-edit"></i> Edit</button>
+                    <button id="btn_delete" class="btn btn-danger btn-sm" style="width: 100px;" disabled><i class="fa fa-trash"></i> Delete</button>
+                    <button id="btn_restore" class="btn btn-info btn-sm" style="width: 100px; display: none;" disabled><i class="fa fa-window-restore"></i> Restore</button>
+                    <a href="@(BusinessLogic.clsSession.LoginType == 1 ? "/admin/dashboard" : "/partner/dashboard")" class="btn btn-secondary btn-sm" style="width: 100px;"><i class="fa fa-arrow-circle-left"></i> Back</a>
+
+                    <div class="float-right">
+                        <a class="btn btn-success btn-sm" id="btn_current" style="width: 100px;" href="#">Current</a>
+                        <a class="btn btn-outline-danger btn-sm" id="btn_archive" style="width: 100px;" href="#">Archive</a>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive table-current-listing">
+                        <table id="current-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="table-responsive table-archive-listing" style="display: none;">
+                        <table id="archive-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_item_setup" tabindex="-1" role="dialog" aria-labelledby="modal_item_setup" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">Add/Edit Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-sample" method="post" id="entry-form" action="/Inventory/AddBrand">
+                    <div class="alert alert-danger error_msg" style="display: none;">This is error</div>
+
+                    <div class="row">
+                        <div class="col-sm-9">
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="txtid">ID <small>* Auto Generated</small></label>
+                                        <input type="text" class="form-control" id="txtid" name="txtid" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="chkActive">Status</label>
+                                        <div class="form-check form-check-flat form-check-primary">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" id="chkActive" name="chkActive" class="form-check-input" checked='checked'> Active
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="txttitle">Title <small style="color: red;">*</small></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="txttitle" name="txttitle" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            @if (BusinessLogic.clsSession.LoginType == 1)
+                            {
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="ddluser">Added By</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="ddluser" name="ddluser">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="txtvideourl">Video URL: <small style="color: red;">*</small></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="txtvideourl" name="txtvideourl" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="txtdescription">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="txtdescription" name="txtdescription"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="txteventdate">Date</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" id="txteventdate" name="txteventdate" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="txtfromtime">From Time</label>
+                                <div class="col-sm-4">
+                                    @*<input type="time" class="form-control" id="txtfromtime" name="txtfromtime" autocomplete="off" />*@
+                                    <input type="text" class="form-control time" id="txtfromtime" name="txtfromtime" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="txttotime">To Time</label>
+                                <div class="col-sm-4">
+                                    @*<input type="time" class="form-control" id="txttotime" name="txttotime" autocomplete="off" />*@
+                                    <input type="text" class="form-control time" id="txttotime" name="txttotime" autocomplete="off" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-3 text-center">
+                            <form id="form1" method="post" action="/Inventory/ImportItems">
+                                <img id="profile_picture_img" src="/content/images/placeholder/product.jpg" style="width: 100%; height: auto;" alt="profile image">
+                                <a id="profile_picture" href="#">Select Image</a>
+                                <input name="image" type="file" style="display: none;" id="hidden_file" />
+                                <input type="hidden" id="hidden_image_name" name="hidden_image_name" value="" />
+                            </form>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveRecord" class="btn btn-success">Save Record</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section FooterSection {
+
+    <script>
+
+        //$('.time').timepicker();
+        $('.time').timepicker({ 'timeFormat': 'H:i' });
+
+        var LoginType = @BusinessLogic.clsSession.LoginType;
+
+        var current_table = bindGrid($('#current-listing'), '/Admin/CurrentLiveVideos');
+        var archive_table = bindGrid($('#archive-listing'), '/Admin/ArchiveLiveVideos');
+
+        if (LoginType == 1) {
+            fillDropDown("/Admin/CurrentUsers", $("#ddluser"), undefined, undefined, undefined, undefined, undefined, undefined);
+        }
+
+        $('#current-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#edit_popup").attr('disabled', 'disabled');
+                $("#btn_delete").attr('disabled', 'disabled');
+            }
+            else {
+                current_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#edit_popup").removeAttr('disabled');
+                $("#btn_delete").removeAttr('disabled');
+            }
+        });
+
+        $('#archive-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#btn_restore").attr('disabled', 'disabled');
+            }
+            else {
+                archive_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#btn_restore").removeAttr('disabled');
+            }
+        });
+
+        $("#add_popup").on("click", function (e) {
+            e.preventDefault();
+            resetPopup();
+            $("#modal_item_setup").modal('show');
+        });
+
+        $("#edit_popup").on("click", function (e) {
+            e.preventDefault();
+
+            var id = current_table.$('tr.selected')[0].id;
+            resetPopup();
+
+            $("#modal_item_setup").modal('show');
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/LiveVideosById",
+                data: { 'id': id },
+                success: function (data) {
+
+                    console.log(data);
+
+                    $("#txtid").val(data["Id"]);
+                    $("#txttitle").val(data["Title"]);
+                    $("#txtvideourl").val(data["VideoURL"]);
+                    $("#txtdescription").val(data["Description"]);
+                    $("#chkActive").prop('checked', data["Active"]);
+                    $("#hidden_image_name").val(data["ImageURL"]);
+                    $("#ddluser").val(data["AddedBy"]);
+                    
+                    $("#txteventdate").val(getActualDate(data["EventDate"]));
+                    $("#txtfromtime").val(data["StringFromTime"]);
+                    $("#txttotime").val(data["StringToTime"]);
+
+                    console.log(getActualTime(data["FromTime"]));
+
+                    if (data["ImageURL"] != "") {
+                        $("#profile_picture_img").attr('src', '/content/uploads/livevideos/' + data['ImageURL'])
+                    }
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                always: function () {
+                    console.log('i am in always');
+                }
+            });
+        });
+
+        $("#btn_delete").on("click", function (e) {
+            e.preventDefault();
+            var id = current_table.$('tr.selected')[0].id;
+            if (LoginType == 1) {
+                moveRecord(id, 2, "/Admin/MoveToArchiveLiveVideos", "/admin/livevideos");
+            }else if(LoginType == 2){
+                moveRecord(id, 2, "/Admin/MoveToArchiveLiveVideos", "/partner/livevideos");
+            }
+
+        });
+
+        $("#btn_restore").on("click", function (e) {
+            e.preventDefault();
+            var id = archive_table.$('tr.selected')[0].id;
+            if (LoginType == 1) {
+                moveRecord(id, 1, "/Admin/MoveToArchiveLiveVideos", "/admin/livevideos");
+            }else if(LoginType == 2){
+                moveRecord(id, 1, "/Admin/MoveToArchiveLiveVideos", "/partner/livevideos");
+            }
+        });
+
+        $("#btnSaveRecord").on("click", function (e) {
+
+            e.preventDefault();
+
+            var hasFocus = false;
+            $("#error_msg").hide();
+
+
+            //alert($("#txteventdate").val());
+            //return false;
+
+            // validation
+
+            if ($("#txttitle").val() == "") {
+                $("#txttitle").parent().parent().find('label').addClass('mt-2 text-danger');
+                $("#txttitle").parent().parent().addClass('has-danger');
+
+                $("#txttitle").focus();
+                hasFocus = true;
+            } else {
+                $("#txttitle").parent().parent().find('label').removeClass('mt-2 text-danger');
+                $("#txttitle").parent().parent().removeClass('has-danger');
+            }
+
+            if ($("#txtvideourl").val().trim() == "") {
+                $("#txtvideourl").parent().parent().find('label').addClass('mt-2 text-danger');
+                $("#txtvideourl").parent().parent().addClass('has-danger');
+
+                if (!hasFocus) {
+                    $("#txtvideourl").focus();
+                    hasFocus = true;
+                }
+            } else {
+                $("#txtvideourl").parent().parent().find('label').removeClass('mt-2 text-danger');
+                $("#txtvideourl").parent().parent().removeClass('has-danger');
+            }
+
+            if ($("#txteventdate").val() == "") {
+                $("#txteventdate").parent().parent().find('label').addClass('mt-2 text-danger');
+                $("#txteventdate").parent().parent().addClass('has-danger');
+
+                $("#txteventdate").focus();
+                hasFocus = true;
+            } else {
+                $("#txteventdate").parent().parent().find('label').removeClass('mt-2 text-danger');
+                $("#txteventdate").parent().parent().removeClass('has-danger');
+            }
+
+            if ($("#txtfromtime").val() == "") {
+                $("#txtfromtime").parent().parent().find('label').addClass('mt-2 text-danger');
+                $("#txtfromtime").parent().parent().addClass('has-danger');
+
+                $("#txtfromtime").focus();
+                hasFocus = true;
+            } else {
+                $("#txtfromtime").parent().parent().find('label').removeClass('mt-2 text-danger');
+                $("#txtfromtime").parent().parent().removeClass('has-danger');
+            }
+
+            if ($("#txttotime").val() == "") {
+                $("#txttotime").parent().parent().find('label').addClass('mt-2 text-danger');
+                $("#txttotime").parent().parent().addClass('has-danger');
+
+                $("#txttotime").focus();
+                hasFocus = true;
+            } else {
+                $("#txttotime").parent().parent().find('label').removeClass('mt-2 text-danger');
+                $("#txttotime").parent().parent().removeClass('has-danger');
+            }
+
+            if (LoginType == 1) {
+
+                if ($("#ddluser").val() == "0") {
+                    $("#ddluser").parent().parent().find('label').addClass('mt-2 text-danger');
+                    $("#ddluser").parent().parent().addClass('has-danger');
+
+                    $("#ddluser").focus();
+                    hasFocus = true;
+                } else {
+                    $("#ddluser").parent().parent().find('label').removeClass('mt-2 text-danger');
+                    $("#ddluser").parent().parent().removeClass('has-danger');
+                }
+
+            }
+
+            if (hasFocus) {
+                return false;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/SaveLiveVideos",
+                data: {
+                    'id': $("#txtid").val(),
+                    'title': $("#txttitle").val(),
+                    'description': $("#txtdescription").val(),
+                    'image_name': $("#hidden_image_name").val(),
+                    'video_url': $("#txtvideourl").val(),
+                    'added_by': $("#ddluser").val(),
+                    'active': $("#chkActive").is(':checked'),
+
+                    'event_date': $("#txteventdate").val(),
+                    'from_time': $("#txtfromtime").val(),
+                    'to_time': $("#txttotime").val()
+                },
+                success: function (data) {
+
+                    if (data["ErrorCode"] == "000") {
+                        if (data["EntryLevel"] == "1") {
+                            if (LoginType == 1) {
+                                SwalSuccesswithRedirect('Success!', 'Record save successfully.', '/admin/livevideos', $("#modal_item_setup"));
+                            }else if(LoginType == 2){
+                                SwalSuccesswithRedirect('Success!', 'Record save successfully.', '/partner/livevideos', $("#modal_item_setup"));
+                            }
+                        } else {
+                            var row_index = current_table.$('tr.selected')[0]._DT_RowIndex;
+                            var data = current_table.row(row_index).data();
+
+                            data["Active"] = $("#chkActive").is(':checked');
+                            data["Title"] = $("#txttitle").val();
+
+                            current_table.row(row_index).data(data);
+
+                            SwalSuccesswithRedirect('Success!', 'Record edit successfully.', undefined, $("#modal_item_setup"));
+                        }
+
+
+                    } else {
+                        //alert('failed to update record');
+                        $("#error_msg").text('failed to update record').show();
+                    }
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                always: function () {
+
+                }
+            });
+
+        });
+
+        $("#profile_picture").on('click', function () {
+            $("#hidden_file").click();
+            return false;
+        });
+
+        $("#hidden_file").on('change', function (e) {
+
+            e.preventDefault();
+
+            $.ajax({
+                url: "/Admin/UploadLiveVideosImage",
+                type: "POST",
+                data: new FormData(this.form),
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function () {
+                    //$("#preview").fadeOut();
+                    //$("#err").fadeOut();
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data['ErrorCode'] == '000') {
+
+                        $("#profile_picture_img").attr('src', '/content/uploads/livevideos/' + data['FileName']);
+                        $("#hidden_image_name").val(data['FileName']);
+                    }
+                    else if (data['ErrorCode'] == '001') {
+                        alert('file not found');
+                    } else if (data['ErrorCode'] == '002') {
+                        alert('invalid file extension');
+                    } else {
+                        alert('unhandled exception');
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                    alert(e);
+                }
+            });
+        });
+
+        $("#btn_current").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-archive-listing").hide();
+            $(".table-current-listing").fadeIn();
+
+            $("#btn_current").removeClass('btn-outline-success').addClass('btn-success');
+            $("#btn_archive").removeClass('btn-danger').addClass('btn-outline-danger');
+
+            $("#edit_popup").show();
+            $("#btn_delete").show();
+            $("#btn_restore").hide();
+
+            if (current_table.$('tr.selected').length > 0) {
+                $("#edit_popup").removeAttr('disabled');
+                $("#btn_delete").removeAttr('disabled');
+            }
+        });
+
+        $("#btn_archive").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-current-listing").hide();
+            $(".table-archive-listing").fadeIn();
+
+            $("#btn_current").removeClass('btn-success').addClass('btn-outline-success');
+            $("#btn_archive").removeClass('btn-outline-danger').addClass('btn-danger');
+
+            $("#edit_popup").hide();
+            $("#btn_delete").hide();
+            $("#btn_restore").show();
+
+            $("#edit_popup").attr('disabled', 'disabled');
+            $("#btn_delete").attr('disabled', 'disabled');
+        });
+
+        $('#modal_item_setup').on('shown.bs.modal', function () {
+            $("#txttitle").focus();
+        });
+
+        function resetPopup() {
+
+            $("#txtid").val('');
+            $("#txttitle").val('');
+            $("#txtvideourl").val('');
+            $("#txtdescription").val('');
+            $("#chkActive").prop('checked', true);
+            $("#hidden_file").val('');
+            $("#hidden_image_name").val('');
+            $("#ddluser").val('0');
+
+            $("#profile_picture_img").attr('src', '/content/images/placeholder/product.jpg');
+
+            $("#txteventdate").val('');
+            $("#txtfromtime").val('');
+            $("#txttotime").val('');
+
+            $("#txttitle").parent().parent().find('label').removeClass('mt-2 text-danger');
+            $("#txttitle").parent().parent().removeClass('has-danger');
+
+            $("#txtvideourl").parent().parent().find('label').removeClass('mt-2 text-danger');
+            $("#txtvideourl").parent().parent().removeClass('has-danger');
+
+            $("#txteventdate").parent().parent().find('label').removeClass('mt-2 text-danger');
+            $("#txteventdate").parent().parent().removeClass('has-danger');
+
+            $("#txtfromtime").parent().parent().find('label').removeClass('mt-2 text-danger');
+            $("#txtfromtime").parent().parent().removeClass('has-danger');
+
+            $("#txttotime").parent().parent().find('label').removeClass('mt-2 text-danger');
+            $("#txttotime").parent().parent().removeClass('has-danger');
+
+        }
+
+        function bindGrid(table, url) {
+            return table.DataTable({
+                "ajax": {
+                    'type': 'POST',
+                    'url': url,
+                    'data': { },
+                },
+                'processing': true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>'
+                },
+                "drawCallback": function () {
+                    $('.dataTables_paginate > .pagination').addClass('rounded-flat');
+                },
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                }],
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Title" },
+                    { "data": "CreatedBy" },
+                    {
+                        "data": "CreatedOn",
+                        "render": function (data, type, row, meta) {
+                            return getDataTableDate(data);
+                        }
+                    },
+                    {
+                        "data": "Active",
+                        "render": function (data, type, row, meta) {
+                            return getDataTableStatus(row['Active']);
+                        }
+                    }
+                ]
+            });
+        }
+
+    </script>
+}
+

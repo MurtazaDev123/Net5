@@ -1,0 +1,500 @@
+﻿
+@{
+    ViewBag.Title = "City";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeadSection {
+    <style>
+    </style>
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            Cities
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Common</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Cities</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button id="add_popup" class="btn btn-primary btn-sm" style="width: 100px;"><i class="fa fa-plus"></i> Add New</button>
+                    <button id="edit_popup" class="btn btn-info btn-sm" style="width: 100px;" disabled><i class="fa fa-edit"></i> Edit</button>
+                    <button id="btn_delete" class="btn btn-danger btn-sm" style="width: 100px;" disabled><i class="fa fa-trash"></i> Delete</button>
+                    <button id="btn_restore" class="btn btn-info btn-sm" style="width: 100px; display: none;" disabled><i class="fa fa fa-window-restore"></i> Restore</button>
+                    <a href="/admin/dashboard" class="btn btn-secondary btn-sm" style="width: 100px;"><i class="fa fa-arrow-circle-left"></i> Back</a>
+
+                    <div class="float-right">
+                        <a class="btn btn-success btn-sm" id="btn_current" style="width: 100px;" href="#">Current</a>
+                        <a class="btn btn-outline-danger btn-sm" id="btn_archive" style="width: 100px;" href="#">Archive</a>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="panel panel-default panel-filter .show" style="">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="display: inline-block;">Filters</h3>
+                    <a href="#" class="close_filter float-right"></a>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group row">
+
+                                <label class="col-sm-1 col-form-label" for="ddlCountrySearch">Country</label>
+                                <div class="col-sm-5">
+                                    <select id="ddlCountrySearch" name="ddlCountrySearch" class="form-control">
+
+                                    </select>
+                                </div>
+
+                                <label class="col-sm-1 col-form-label" for="ddlStateSearch">State</label>
+                                <div class="col-sm-5">
+                                    <select id="ddlStateSearch" name="ddlStateSearch" class="form-control"></select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="btn-group">
+                                <a href="#" id="btnApplyFilter" class="btn btn-sm btn-success">Fetch City</a>&nbsp;
+                                @*<a href="#" id="btnResetFilter" class="btn btn-sm btn-info">Reset Filter</a>*@
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive table-current-listing">
+                        <table id="current-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Code</th>
+                                    <th>City Name</th>
+                                    <th>Country</th>
+                                    <th>State</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive table-archive-listing" style="display: none;">
+                        <table id="archive-listing" class="table table-striped table-hover table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Code</th>
+                                    <th>City Name</th>
+                                    <th>Country</th>
+                                    <th>State</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_setup" tabindex="-1" role="dialog" aria-labelledby="modal_setup" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">Add/Edit City</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-sample" method="post" id="entry-form" action="/Common/AddState">
+                    <div class="alert alert-danger error_msg" style="display: none;">This is error</div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="txtid">ID</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="txtid" name="txtid" readonly />
+                        </div>
+                        <label class="col-sm-5"><small>* Auto Generated</small></label>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="txtcode">Code <small style="color: red;">*</small></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="txtcode" name="txtcode" autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="txtname">City Name <small style="color: red;">*</small></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="txtname" name="txtname" autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="ddlcountry">Country <small style="color: red;">*</small></label>
+                        <div class="col-sm-9">
+                            <select id="ddlcountry" name="ddlcountry" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="ddlstate">State <small style="color: red;">*</small></label>
+                        <div class="col-sm-9">
+                            <select id="ddlstate" name="ddlstate" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
+                            <div class="form-check form-check-flat form-check-primary">
+                                <label class="form-check-label">
+                                    <input type="checkbox" id="chkActive" name="chkActive" class="form-check-input" checked='checked'> Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="btnSaveRecord" class="btn btn-success">Save Record</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section FooterSection {
+    <script>
+
+        var currentListURL = '/Admin/CurrentCitiesByCountryStateId';
+        var archiveListURL = '/Admin/ArchiveCity';
+        var searchByIdURL = '/Admin/CityById';
+        var moveToArchiveURL = '/Admin/MoveToArchiveCity';
+        var redirectionURL = '/admin/city';
+        var saveURL = '/Admin/SaveCity';
+        
+        fillDropDown("/Admin/CurrentCountries", $("#ddlcountry"), undefined, 1, "/Admin/StatesByCountry/", $("#ddlstate"), undefined, undefined, true, $("#modal_setup"));
+        fillDropDown("/Admin/CurrentCountries", $("#ddlCountrySearch"), undefined, undefined, "/Admin/StatesByCountry/", $("#ddlStateSearch"), undefined, undefined, true);
+        //fillDropDown("/Admin/CurrentCountries", $("#ddlCountrySearch"), undefined, undefined, undefined, undefined, undefined, undefined, true);
+
+        //fillDropDown("/Admin/CurrentCountries", $("#ddlcountry"), undefined, undefined, undefined, undefined, undefined, undefined, true, $("#modal_setup"));
+        //fillDropDown("/Admin/CurrentStates", $("#ddlstate"), undefined, undefined, undefined, undefined, undefined, undefined, true, $("#modal_setup"));
+
+        var current_table = bindGrid($('#current-listing'), currentListURL);
+        var archive_table = bindGrid($('#archive-listing'), archiveListURL);
+
+        $('#current-listing tbody').on('click', 'tr', function () {
+
+            //alert('im here');
+
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#edit_popup").attr('disabled', 'disabled');
+                $("#btn_delete").attr('disabled', 'disabled');
+            }
+            else {
+                current_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#edit_popup").removeAttr('disabled');
+                $("#btn_delete").removeAttr('disabled');
+            }
+        });
+
+        $('#archive-listing tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+                $("#btn_restore").attr('disabled', 'disabled');
+            }
+            else {
+                archive_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#btn_restore").removeAttr('disabled');
+            }
+        });
+
+        $("#add_popup").on("click", function (e) {
+            e.preventDefault();
+            resetPopup();
+            $("#modal_setup").modal('show');
+        });
+
+        $("#edit_popup").on("click", function (e) {
+            e.preventDefault();
+
+            var id = current_table.$('tr.selected')[0].id;
+            resetPopup();
+
+            $("#modal_setup").modal('show');
+
+            $.ajax({
+                type: "POST",
+                url: searchByIdURL,
+                data: { 'id': id },
+                success: function (data) {
+                    console.log(data);
+                    $("#txtid").val(data["Id"]);
+                    $("#txtcode").val(data["Code"]);
+                    $("#txtname").val(data["Name"]);
+                    $("#ddlcountry").val(data["Country"]["Id"]).trigger('change');
+                    $("#ddlstate").val(data["State"]["Id"]).trigger('change');
+                    $("#chkActive").prop('checked', data["Active"]);
+
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                always: function () {
+                    console.log('i am in always');
+                }
+            });
+
+
+        });
+
+        $("#btn_delete").on("click", function (e) {
+            e.preventDefault();
+            var id = current_table.$('tr.selected')[0].id;
+            moveRecord(id, 2, moveToArchiveURL, redirectionURL);
+        });
+
+        $("#btn_restore").on("click", function (e) {
+            e.preventDefault();
+            var id = archive_table.$('tr.selected')[0].id;
+            moveRecord(id, 1, moveToArchiveURL, redirectionURL);
+        });
+
+        $("#btnSaveRecord").on("click", function (e) {
+
+            e.preventDefault();
+
+            var hasFocus = false;
+            $("#error_msg").hide();
+
+            // validation
+            if ($("#txtname").val().trim() == "") {
+                $("#txtname").parent().parent().find('label').addClass('mt-2 text-danger');
+                $("#txtname").parent().parent().addClass('has-danger');
+
+                $("#txtname").focus();
+                hasFocus = true;
+            } else {
+                $("#txtname").parent().parent().find('label').removeClass('mt-2 text-danger');
+                $("#txtname").parent().parent().removeClass('has-danger');
+            }
+
+            if (hasFocus) {
+                return false;
+            }
+
+            console.log("test");
+
+            $.ajax({
+                type: "POST",
+                url: saveURL,
+                data: {
+                    'Id': $("#txtid").val(),
+                    'Code': $("#txtcode").val(),
+                    'Fullname': $("#txtname").val(),
+                    'CountryId': $("#ddlcountry").val(),
+                    'StateId': $("#ddlstate").val(),
+                    'Active': $("#chkActive").is(':checked'),
+                },
+                success: function (data) {
+
+                    if (data["ErrorCode"] == "000") {
+                        if (data["EntryLevel"] == "1") {
+                            SwalSuccesswithRedirect('Success!', 'Record save successfully.', redirectionURL, $("#modal_setup"));
+                        } else {
+                            var row_index = current_table.$('tr.selected')[0]._DT_RowIndex;
+                            var data = current_table.row(row_index).data();
+
+                            data["Active"] = $("#chkActive").is(':checked');
+                            data["Code"] = $("#txtcode").val();
+                            data["Name"] = $("#txtname").val();
+                            data["Country"]["Id"] = $("#ddlcountry").val();
+                            data["Country"]["Name"] = $("#ddlcountry option:selected").text();
+                            data["State"]["Id"] = $("#ddlstate").val();
+                            data["State"]["Name"] = $("#ddlstate option:selected").text();
+
+                            current_table.row(row_index).data(data);
+
+                            SwalSuccesswithRedirect('Success!', 'Record edit successfully.', undefined, $("#modal_setup"));
+                        }
+                    }
+                    else {
+                        //alert('failed to update record');
+                        $("#error_msg").text('failed to update record').show();
+                    }
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                always: function () {
+                    //console.log('i am in always');
+                }
+            });
+        });
+
+        $("#btn_current").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-archive-listing").hide();
+            $(".table-current-listing").fadeIn();
+
+            $("#btn_current").removeClass('btn-outline-success').addClass('btn-success');
+            $("#btn_archive").removeClass('btn-danger').addClass('btn-outline-danger');
+
+            $("#edit_popup").show();
+            $("#btn_delete").show();
+            $("#btn_restore").hide();
+
+            if (current_table.$('tr.selected').length > 0) {
+                $("#edit_popup").removeAttr('disabled');
+                $("#btn_delete").removeAttr('disabled');
+            }
+        });
+
+        $("#btn_archive").on("click", function (e) {
+            e.preventDefault();
+
+            $(".table-current-listing").hide();
+            $(".table-archive-listing").fadeIn();
+
+            $("#btn_current").removeClass('btn-success').addClass('btn-outline-success');
+            $("#btn_archive").removeClass('btn-outline-danger').addClass('btn-danger');
+
+            $("#edit_popup").hide();
+            $("#btn_delete").hide();
+            $("#btn_restore").show();
+
+            $("#edit_popup").attr('disabled', 'disabled');
+            $("#btn_delete").attr('disabled', 'disabled');
+        });
+
+        $('#modal_setup').on('shown.bs.modal', function () {
+            $("#txtname").focus();
+        });
+
+        $("#btnApplyFilter").on("click", function (e) {
+            e.preventDefault();
+            RecallTables();
+        });
+
+        $("#btnResetFilter").on('click', function (e) {
+            e.preventDefault();
+            //$("#ddlCountrySearch").val('0');
+            $("#ddlCountrySearch").val('0').trigger('change');
+            RecallTables();
+        });
+
+        function RecallTables() {
+
+            $('#current-listing').dataTable().fnDestroy();
+            $('#archive-listing').dataTable().fnDestroy();
+
+            current_table = bindGrid($('#current-listing'), currentListURL);
+            archive_table = bindGrid($('#archive-listing'), archiveListURL);
+        }
+
+        function resetPopup() {
+            $("#txtid").val('');
+            $("#txtcode").val('');
+            $("#txtname").val('');
+            $("#ddlcountry").val('0').trigger('change');
+            $("#ddlstate").val('0').trigger('change');
+            $("#chkActive").prop('checked', true);
+
+            $("#txtname").parent().parent().find('label').removeClass('mt-2 text-danger');
+            $("#txtname").parent().parent().removeClass('has-danger');
+        }
+
+        function bindGrid(table, url) {
+            return table.DataTable({
+                "ajax": {
+                    'type': 'POST',
+                    'url': url,
+                    'data': { CountryId: $("#ddlCountrySearch").val(), StateId: $("#ddlStateSearch").val() },
+                },
+                'processing': true,
+                //'serverSide': true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>'
+                },
+                "drawCallback": function () {
+                    $('.dataTables_paginate > .pagination').addClass('rounded-flat');
+                },
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                }],
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Code" },
+                    { "data": "Name" },
+                    {
+                        "data": "Country",
+                        "render": function (data, type, row, meta) {
+                            return data["Name"];
+                        }
+                    },
+                    {
+                        "data": "State",
+                        "render": function (data, type, row, meta) {
+                            return data["Name"];
+                        }
+                    },
+                    { "data": "CreatedBy" },
+                    {
+                        "data": "CreatedOn",
+                        "render": function (data, type, row, meta) {
+                            return getDataTableDate(data);
+                        }
+                    },
+                    {
+                        "data": "Active",
+                        "render": function (data, type, row, meta) {
+                            return getDataTableStatus(row['Active']);
+                        }
+                    }
+                ]
+            });
+        }
+
+    </script>
+}

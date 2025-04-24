@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "ErrorPage";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<section class="thankYou">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="thankYouInner">
+                    <img src="/content/web/img/warning.png">
+                    <h2>Aaah! Something went wrong</h2>
+                    <strong>Brace yourself till we get the error fixed.<br/>
+                    You may also refresh the page or try again later</strong>
+                    <div class="orderTrackBtn">
+                        <button type="button" class="btn btn-red" onclick="window.location.href='/'">Go to Home Page</button>
+                        <button type="button" class="btn btn-red-outline" onclick="window.location.reload()">Refresh Page</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br />

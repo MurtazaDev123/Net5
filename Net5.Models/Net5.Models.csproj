@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9CD7F505-E77D-43C2-9895-E2818C4FC8CD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartEcommerce.Models</RootNamespace>
+    <AssemblyName>SmartEcommerce.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\Account.cs" />
+    <Compile Include="Admin\AccountUser.cs" />
+    <Compile Include="Admin\Logins.cs" />
+    <Compile Include="Admin\Other.cs" />
+    <Compile Include="Common\City.cs" />
+    <Compile Include="Common\Country.cs" />
+    <Compile Include="Common\DisputeVideo.cs" />
+    <Compile Include="Common\Partner.cs" />
+    <Compile Include="Common\PartnerCategory.cs" />
+    <Compile Include="Common\PartnerContentType.cs" />
+    <Compile Include="Common\PartnerType.cs" />
+    <Compile Include="Common\Payments.cs" />
+    <Compile Include="Common\Sliders.cs" />
+    <Compile Include="Common\State.cs" />
+    <Compile Include="Common\Subscriber.cs" />
+    <Compile Include="Common\Subscription.cs" />
+    <Compile Include="Common\SystemConfiguration.cs" />
+    <Compile Include="Common\Topic.cs" />
+    <Compile Include="Common\User.cs" />
+    <Compile Include="Product\Basket.cs" />
+    <Compile Include="Product\Brand.cs" />
+    <Compile Include="Product\Category.cs" />
+    <Compile Include="Product\LiveStreaming.cs" />
+    <Compile Include="Product\LiveVideos.cs" />
+    <Compile Include="Product\Product.cs" />
+    <Compile Include="Product\ProductDetail.cs" />
+    <Compile Include="Product\Programs.cs" />
+    <Compile Include="Product\Videos.cs" />
+    <Compile Include="Product\VideoSearch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Store\Mall.cs" />
+    <Compile Include="Store\Store.cs" />
+    <Compile Include="Product\ProductSearch.cs" />
+    <Compile Include="Web\HomePage.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

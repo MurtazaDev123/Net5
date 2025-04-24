@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SmartEcommerce.Models.Product.Category>
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Category</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="recentHub nonCarousel">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="bigTitle">
+                    <h1>CATEGORIES</h1>
+                </div>
+
+                <div class="recentHubInner leftRight">
+
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="productBox">
+                                <div class="image">
+                                    <a href="@item.URL"><img src="/@item.ImageURL"></a>
+                                </div>
+                                <div class="productInfo">
+                                    <div class="title">
+                                        <h3><a href="@item.URL">@item.Title</a></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br />

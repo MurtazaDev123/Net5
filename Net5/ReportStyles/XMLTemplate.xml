@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<DocumentElement>
+  <Template>
+    <!-- This is Report Title Please Defind parameters Values -->
+    <ShowTitle>True</ShowTitle>
+    <TemplateId>1</TemplateId>
+    <TitleHeight>20</TitleHeight>
+    <TitleFont>Tahoma</TitleFont>
+    <TitleFontSize>14</TitleFontSize>
+    <TitleTextAligment>MiddleCenter</TitleTextAligment>
+    <TitleBackColor>238,238,238</TitleBackColor>
+    <TitleUndeLine>False</TitleUndeLine>
+    <TitleBold>True</TitleBold>
+    <!-- This is Report Right Table Please Defind parameters Values -->
+    <!-- RightTable is Bolean Field please set Value True or False -->
+    <ShowRightTable>True</ShowRightTable>
+    <RightTableId>1</RightTableId>
+    <RTableColumn1Font>Tahoma</RTableColumn1Font>
+    <RTableColumn1FontSize>8</RTableColumn1FontSize>
+    <RTableColumn1BackColor>212,212,212</RTableColumn1BackColor>
+    <RTableColumn1TextAlign>MiddleLeft</RTableColumn1TextAlign>
+    <RTableColumn1Bold>True</RTableColumn1Bold>
+    <RTableColumn1UnderLine>False</RTableColumn1UnderLine>
+    <RTableColumn2Font>Tahoma</RTableColumn2Font>
+    <RTableColumn2FontSize>8</RTableColumn2FontSize>
+    <RTableColumn2BackColor>238,238,238</RTableColumn2BackColor>
+    <RTableColumn2TextAlign>MiddleLeft</RTableColumn2TextAlign>
+    <RTableColumn2Bold>False</RTableColumn2Bold>
+    <RTableColumn2UnderLine>false</RTableColumn2UnderLine>
+    <RTableBorder>All</RTableBorder>
+    <RTableBorderColor>212,212,212</RTableBorderColor>
+    <!--LeftTable is Bolean Field please set Value True or False -->
+    <ShowLeftTable>True</ShowLeftTable>
+    <LeftTableId>1</LeftTableId>
+    <LTableFont>Arial</LTableFont>
+    <LTableFontSize>12</LTableFontSize>
+    <LTableFontColor>128,128,128</LTableFontColor>
+    <LTableTextAlign>MiddleLeft</LTableTextAlign>
+    <LTableBold>True</LTableBold>
+    <LTableUnderLine>false</LTableUnderLine>
+    <!--Detail Band alternative color-->
+    <DetailBandId>1</DetailBandId>
+
+    <!--Header Table Color-->
+    <HeaderTableBackColor>189,177,183</HeaderTableBackColor>
+    <!--Footer Band-->
+    <ShowFooter>True</ShowFooter>
+    <!--Line Type Like Solid,Dotted,Dashed-->
+    <FooterLineType>Solid</FooterLineType>
+    <FooterLineWidth>1</FooterLineWidth>
+    <FooterText>End Of Report</FooterText>
+    <FooterFont>Tahoma</FooterFont>
+    <FooterFontSize>8</FooterFontSize>
+    <FooterFontColor>125,125,255</FooterFontColor>
+    <FooterTextBold>False</FooterTextBold>
+    <!--Footer Text Location like Center,Left,Right-->
+    <FooterTextLocation>Right</FooterTextLocation>
+  </Template>
+
+  <Template>
+    <!-- This is Report Title Please Defind parameters Values -->
+    <ShowTitle>True</ShowTitle>
+    <TemplateId>2</TemplateId>
+    <TitleHeight>20</TitleHeight>
+    <TitleFont>Tahoma</TitleFont>
+    <TitleFontSize>14</TitleFontSize>
+    <TitleTextAligment>MiddleCenter</TitleTextAligment>
+    <TitleBackColor>238,238,238</TitleBackColor>
+    <TitleUndeLine>False</TitleUndeLine>
+    <TitleBold>True</TitleBold>
+    <!-- This is Report Right Table Please Defind parameters Values -->
+    <!-- RightTable is Bolean Field please set Value True or False -->
+    <ShowRightTable>True</ShowRightTable>
+    <RightTableId>2</RightTableId>
+    <RTableColumn1Font>Tahoma</RTableColumn1Font>
+    <RTableColumn1FontSize>8</RTableColumn1FontSize>
+    <RTableColumn1BackColor>212,212,212</RTableColumn1BackColor>
+    <RTableColumn1TextAlign>MiddleLeft</RTableColumn1TextAlign>
+    <RTableColumn1Bold>True</RTableColumn1Bold>
+    <RTableColumn1UnderLine>False</RTableColumn1UnderLine>
+    <RTableColumn2Font>Tahoma</RTableColumn2Font>
+    <RTableColumn2FontSize>8</RTableColumn2FontSize>
+    <RTableColumn2BackColor>238,238,238</RTableColumn2BackColor>
+    <RTableColumn2TextAlign>MiddleLeft</RTableColumn2TextAlign>
+    <RTableColumn2Bold>False</RTableColumn2Bold>
+    <RTableColumn2UnderLine>false</RTableColumn2UnderLine>
+    <RTableBorder>All</RTableBorder>
+    <RTableBorderColor>212,212,212</RTableBorderColor>
+    <!--LeftTable is Bolean Field please set Value True or False -->
+    <ShowLeftTable>True</ShowLeftTable>
+    <LeftTableId>2</LeftTableId>
+    <LTableFont>Arial</LTableFont>
+    <LTableFontSize>12</LTableFontSize>
+    <LTableFontColor>128,128,128</LTableFontColor>
+    <LTableTextAlign>MiddleLeft</LTableTextAlign>
+    <LTableBold>True</LTableBold>
+    <LTableUnderLine>false</LTableUnderLine>
+    <!--Detail Band alternative color-->
+    <!--<DetailBandId>2</DetailBandId>
+    <ShowAlternativeColor>True</ShowAlternativeColor>
+    <AlterNativeColor>240,240,240</AlterNativeColor>
+    <ALterNativeColorOrder>odd</ALterNativeColorOrder>-->
+    <!--Header Table Color-->
+    <HeaderTableBackColor>189,177,183</HeaderTableBackColor>
+    <!--Footer Band-->
+    <ShowFooter>True</ShowFooter>
+    <!--Line Type Like Solid,Dotted,Dashed-->
+    <FooterLineType>Solid</FooterLineType>
+    <FooterLineWidth>0</FooterLineWidth>
+    <FooterText>End Of Report</FooterText>
+    <FooterFont>Tahoma</FooterFont>
+    <FooterFontSize>8</FooterFontSize>
+    <FooterFontColor>125,125,255</FooterFontColor>
+    <FooterTextBold>False</FooterTextBold>
+    <!--Footer Text Location like Center,Left,Right-->
+    <FooterTextLocation>Center</FooterTextLocation>
+  </Template>
+  
+  
+    <Template>
+    <!-- This is Report Title Please Defind parameters Values -->
+    <ShowTitle>True</ShowTitle>
+    <TemplateId>3</TemplateId>
+    <TitleHeight>20</TitleHeight>
+    <TitleFont>Tahoma</TitleFont>
+    <TitleFontSize>14</TitleFontSize>
+    <TitleTextAligment>MiddleCenter</TitleTextAligment>
+    <TitleBackColor>238,238,238</TitleBackColor>
+    <TitleUndeLine>False</TitleUndeLine>
+    <TitleBold>True</TitleBold>
+    <!-- This is Report Right Table Please Defind parameters Values -->
+    <!-- RightTable is Bolean Field please set Value True or False -->
+    <ShowRightTable>True</ShowRightTable>
+    <RightTableId>3</RightTableId>
+    <RTableColumn1Font>Tahoma</RTableColumn1Font>
+    <RTableColumn1FontSize>8</RTableColumn1FontSize>
+    <RTableColumn1BackColor>212,212,212</RTableColumn1BackColor>
+    <RTableColumn1TextAlign>MiddleLeft</RTableColumn1TextAlign>
+    <RTableColumn1Bold>True</RTableColumn1Bold>
+    <RTableColumn1UnderLine>False</RTableColumn1UnderLine>
+    <RTableColumn2Font>Tahoma</RTableColumn2Font>
+    <RTableColumn2FontSize>8</RTableColumn2FontSize>
+    <RTableColumn2BackColor>238,238,238</RTableColumn2BackColor>
+    <RTableColumn2TextAlign>MiddleLeft</RTableColumn2TextAlign>
+    <RTableColumn2Bold>False</RTableColumn2Bold>
+    <RTableColumn2UnderLine>false</RTableColumn2UnderLine>
+    <RTableBorder>All</RTableBorder>
+    <RTableBorderColor>212,212,212</RTableBorderColor>
+    <!--LeftTable is Bolean Field please set Value True or False -->
+    <ShowLeftTable>True</ShowLeftTable>
+    <LeftTableId>3</LeftTableId>
+    <LTableFont>Arial</LTableFont>
+    <LTableFontSize>12</LTableFontSize>
+    <LTableFontColor>128,128,128</LTableFontColor>
+    <LTableTextAlign>MiddleLeft</LTableTextAlign>
+    <LTableBold>True</LTableBold>
+    <LTableUnderLine>false</LTableUnderLine>
+    <!--Detail Band alternative color-->
+    <DetailBandId>1</DetailBandId>
+    <ShowAlternativeColor>True</ShowAlternativeColor>
+    <AlterNativeColor>240,240,240</AlterNativeColor>
+    <ALterNativeColorOrder>odd</ALterNativeColorOrder>
+    <!--Header Table Color-->
+    <HeaderTableBackColor>189,177,183</HeaderTableBackColor>
+    <!--Footer Band-->
+    <ShowFooter>True</ShowFooter>
+    <!--Line Type Like Solid,Dotted,Dashed-->
+    <FooterLineType>Solid</FooterLineType>
+    <FooterLineWidth>1</FooterLineWidth>
+    <FooterText>End Of Report</FooterText>
+    <FooterFont>Tahoma</FooterFont>
+    <FooterFontSize>8</FooterFontSize>
+    <FooterFontColor>125,125,255</FooterFontColor>
+    <FooterTextBold>False</FooterTextBold>
+    <!--Footer Text Location like Center,Left,Right-->
+    <FooterTextLocation>Right</FooterTextLocation>
+  </Template>
+  
+</DocumentElement>

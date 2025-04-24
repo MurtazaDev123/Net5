@@ -1,0 +1,234 @@
+﻿@model SmartEcommerce.Models.Common.Subscription
+@{
+    ViewBag.Title = "My Subscription";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+@section HeadSection {
+    
+    <link rel="stylesheet" href="~/content/css/jquery-confirm.min.css" />
+    <style>
+        .jconfirm {
+            color: black;
+        }
+    </style>
+ }
+
+<section class="searchStoreName">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Subscription</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="accountSection longForm">
+    <div class="accountSectionInner">
+        <div class="col-sm-12">
+            <div class="accountformDetail">
+                <form>
+                    <h1 class="text-center"> MY SUBSCRIPTION</h1> <br>
+
+
+                    @if (Model.SubStatus == "Active" && Model.SubType == "Paid")
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="txtName" id="txtName" value="@Model.Country.Currency @Model.SubAmount Per @Model.SubPlan" disabled="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <ul class="list-group">
+                                <li class="list-group-item"><span class="fa fa-check"></span> Your subscription status is @Model.SubStatus.</li>
+                                <li class="list-group-item"><span class="fa fa-check"></span> Your subscription billing cycle @Model.SubPlan. </li>
+                                <li class="list-group-item"><span class="fa fa-check"></span> Your subscription start date @Model.SubStartDate.</li> @*01-Jan-2020*@
+                                <li class="list-group-item"><span class="fa fa-check"></span> Your next payment charge on @Model.SubEndDate.</li> @*30-Dec-2020*@
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            @*<button type="button" class="btn btn-red" id="btnCancel">CANCEL SUBSCRIPTION</button>*@
+                            <a href="javascript:;" id="btnCancel" style="color:#737272;">Cancel Subscription</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="txtName" id="txtName" value="@(Model.SubType == "Trial" ? "Trial Plan" : @Model.Country.Currency + " " + @Model.SubAmount + " / " + @Model.SubPlan)" disabled="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <ul class="list-group">
+                                <li class="list-group-item"><span class="fa fa-check"></span> Your @(Model.SubType == "Trial" ? "Trial" : "") subscription is @Model.SubStatus.</li>
+
+                                @if (Model.SubType == "Trial")
+                                {
+                                    <li class="list-group-item"><span class="fa fa-check"></span> Your Trial start date @Model.SubStartDate.</li> @*01-Jan-2020*@
+                                }
+                                
+                                <li class="list-group-item"><span class="fa fa-check"></span> Your @(Model.SubType == "Trial" ? "trial" : "subscription") expire on @Model.SubEndDate.</li> @*30-Dec-2020*@
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+
+                            @if (Model.SubStatus == "Cancelled")
+                            {
+                                <button type="button" class="btn btn-red" id="btnReActive">RE-ACTIVE SUBSCRIPTION</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-red" id="btnActive" onclick="window.location.href='/subscription-plan'">ACTIVE SUBSCRIPTION</button>
+                            }
+
+
+                        </div>
+                    }
+
+                    @*<div class="textAgree">
+                        Cancel and upgrade an subscription, you agree to the <a href="/">Netfive.tv</a> <br><a href="/terms-and-conditions">Membership Agreement</a> and <a href="/privacy-and-policy">Privacy Policy</a>.
+                    </div>*@
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section FooterSection {
+
+    <script src="~/scripts/jquery-confirm.min.js"></script>
+
+<script>
+
+        $(document).on("click", "#btnCancel", function (e) {
+            e.preventDefault();
+
+            $.confirm({
+                title: 'Confirm Cancel!',
+                content: 'Do you wish to cancel the subscription of Net5',
+                type: 'red',
+                buttons: {
+                    confirm: {
+                        text: 'Yes Cancel',
+                        btnClass: 'btn-primary',
+                        action: function () {
+
+                            $("#btnCancel").attr("disabled", true);
+                            $("#btnCancel").text("PROCESS..");
+
+
+                            $.ajax({
+                                type: "POST",
+                                url: '/Web/SubscriptionPlanCancel',
+                                data: {},
+                                success: function (data) {
+
+                                    console.log(data);
+                                    $("#btnCancel").text("Cancel Subscription");
+
+                                    if (data.ErrorCode == "000") {
+                                        ToastSuccess('SUBSCRIPTION', 'Your Subscription has been cancelled..!');
+                                        setTimeout(function () { window.location.href = '/' }, 3000);
+                                    } else {
+                                        $("#btnCancel").removeAttr("disabled");
+                                        ToastError('SUBSCRIPTION', 'Error Occured..!');
+                                    }
+                                },
+                                failure: function (data) {
+                                    console.log("Save failed result :", data);
+                                },
+                                complete: function () {
+
+                                }
+                            });
+                            
+                        }
+                    },
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-danger',
+                        action: function () {
+                            //$.alert('Canceled!');
+                        }
+                    }
+                }
+            });
+
+        });
+        
+        $(document).on("click", "#btnReActive", function (e) {
+            e.preventDefault();
+
+            $.confirm({
+                title: 'Confirm Re-Active!',
+                content: 'Do you wish to re-active the subscription of Net5',
+                type: 'red',
+                buttons: {
+                    confirm: {
+                        text: 'Yes Re-Active',
+                        btnClass: 'btn-primary',
+                        action: function () {
+
+                            $("#btnReActive").attr("disabled", true);
+                            $("#btnReActive").text("PROCESS..");
+
+                            $.ajax({
+                                type: "POST",
+                                url: '/Web/SubscriptionPlanReActive',
+                                data: {},
+                                success: function (data) {
+
+                                    console.log(data);
+                                    $("#btnReActive").text("RE-ACTIVE SUBSCRIPTION");
+
+                                    if (data.ErrorCode == "000") {
+                                        ToastSuccess('SUBSCRIPTION', 'Your Subscription has been Re-Activated..!');
+                                        setTimeout(function () { window.location.href = '/' }, 3000);
+                                    } else {
+                                        $("#btnReActive").removeAttr("disabled");
+                                        ToastError('SUBSCRIPTION', 'Error Occured..!');
+                                    }
+                                },
+                                failure: function (data) {
+                                    console.log("Save failed result :", data);
+                                },
+                                complete: function () {
+
+                                }
+                            });
+
+                        }
+                    },
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-danger',
+                        action: function () {
+                            //$.alert('Canceled!');
+                        }
+                    }
+                }
+            });
+
+        });
+</script>
+
+}
+
+  
+
+
+

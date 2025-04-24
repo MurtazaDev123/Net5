@@ -1,0 +1,204 @@
+﻿
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeadSection {
+    <style>
+
+    </style>
+}
+
+@*https://www.dreamincode.net/forums/topic/395765-using-x-editable-using-bootstrap-3-jquery-and-php/
+http://vitalets.github.io/x-editable/docs.html#text*@
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            Settings
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Common Setup</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Settings</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-lg-7 grid-margin stretch-card">
+                    <!--x-editable starts-->
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Settings</h4>
+                            @*<p class="card-description">Edit forms inline</p>*@
+                            <div class="template-demo">
+                                <form id="form1" class="editable-form1">
+                                    <div class="form-group row">
+                                        <label class="col-6 col-lg-4 col-form-label">Monthly Rate</label>
+                                        <div class="col-6 col-lg-8 d-flex align-items-center">
+                                            <input type="text" class="form-control" id="txtMonthlyRate" name="txtMonthlyRate" autocomplete="off" onkeypress="return validateNumbers(event)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-6 col-lg-4 col-form-label">Yearly Rate</label>
+                                        <div class="col-6 col-lg-8 d-flex align-items-center">
+                                            <input type="text" class="form-control" id="txtYearlyRate" name="txtYearlyRate" autocomplete="off" onkeypress="return validateNumbers(event)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-6 col-lg-4 col-form-label">Trial (On/Off)</label>
+                                        <div class="col-6 col-lg-8 d-flex align-items-center">
+                                            <div class="form-check form-check-flat form-check-primary">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" id="chkTrial" name="chkTrial" class="form-check-input">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-6 col-lg-4 col-form-label">Trial Days</label>
+                                        <div class="col-6 col-lg-8 d-flex align-items-center">
+                                            <input type="text" class="form-control" id="txtTrialDays" name="txtTrialDays" autocomplete="off" onkeypress="return validateNumbers(event)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-6 col-lg-4 col-form-label"></label>
+                                        <div class="col-6 col-lg-8 d-flex align-items-center">
+                                            <button type="button" id="btnSave" class="btn btn-success">Save Record</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--x-editable ends-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section FooterSection {
+    <script>
+        $(document).ready(function () {
+
+            $('#btnSave').click(function () {
+
+                if (Validation()) {
+
+                    $("#btnSave").attr("disabled", true);
+                    $("#btnSave").text("Process..");
+
+                    var is_trial = $('#chkTrial').is(":checked") ? 'true' : 'false';
+
+                    var Form_data = new FormData($('#form1')[0]);
+                    Form_data.append("IsTrial", is_trial);
+
+                    $.ajax({
+                        url: "/Admin/SaveSettings",
+                        type: "POST",
+                        data: Form_data,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function () {
+                            //$("#preview").fadeOut();
+                            //$("#err").fadeOut();
+                        },
+                        success: function (data) {
+
+                            //alert("Response from server " + data);
+                            console.log(data["ErrorCode"]);
+
+                            $("#btnSave").text("Save Record");
+                            $("#btnSave").removeAttr("disabled");
+
+                            if (data["ErrorCode"] == '000') {
+                                ToastSuccess('Success!', 'Record save successfully.');
+                            } else {
+                                ToastError('Fail!', 'failed to update record');
+                            }
+
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            alert(e);
+                        }
+                    });
+                }
+            });
+            
+            GetValues();
+
+            $("#chkTrial").change(function () {
+                if (this.checked) {
+                    $("#txtTrialDays").focus();
+                    $("#txtTrialDays").val('');
+                } else {
+                    $("#txtTrialDays").val(0);
+                }
+            });
+
+        });
+
+        function GetValues() {
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/GetSettings",
+                data: { },
+                success: function (data) {
+                    console.log(data);
+                    
+                    $("#txtMonthlyRate").val(data["MonthlyRate"]);
+                    $("#txtYearlyRate").val(data["YearlyRate"]);
+
+                    if (data["IsTrial"] == 'true') {
+                        $("#chkTrial").prop('checked', true);
+                    } else {
+                        $("#chkTrial").prop('checked', false);
+                    }
+
+                    $("#txtTrialDays").val(data["TrialDays"]);
+
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                always: function () {
+                    console.log('i am in always');
+                }
+            });
+
+        }
+
+        function Validation() {
+
+            if ($("#txtMonthlyRate").val() != "" && $("#txtYearlyRate").val() != "" && $("#txtTrialDays").val() != "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function validateNumbers(key) {
+            //getting key code of pressed key
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+            if (!(keycode == 8 || keycode == 46) && (keycode < 48 || keycode > 57)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+    </script>
+}
